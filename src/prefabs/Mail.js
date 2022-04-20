@@ -3,4 +3,13 @@ class Email extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);
     }
+
+    update() {
+        if(Phaser.Input.Keyboard.JustDown(keyUP)) {
+            this.y -= differenceY;
+        }
+        if(Phaser.Input.Keyboard.JustDown(keyDOWN)) {
+            this.y += differenceY;
+        }
+    }
 }
