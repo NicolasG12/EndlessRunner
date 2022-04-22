@@ -19,5 +19,5 @@ let playerX = 100;
 //the y distance between lanes
 let differenceY = 75;
 //speed for viruses
-let virusSpeed = -100;
+let virusSpeed = -300;
 let keyUP, keyDOWN, keyR;

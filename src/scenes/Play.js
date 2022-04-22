@@ -24,6 +24,7 @@ class Play extends Phaser.Scene {
             }
         });
 
+
         this.virusPool = this.physics.add.group({
             removeCallback: function(virus) {
                 virus.scene.virusGroup.add(virus);
@@ -46,6 +47,7 @@ class Play extends Phaser.Scene {
         console.log(this.virusPool.getLength());
         if(this.virusPool.getLength()) {
             virus = this.virusPool.getFirst();
+            virus.x = game.config.width - 100;
             virus.y = posY;
             virus.active = true;
             virus.visible = true;
@@ -55,8 +57,8 @@ class Play extends Phaser.Scene {
             virus = new Virus(this, game.config.width - 100, posY, 'virus').setOrigin(0, 0);
             virus.setImmovable(true);
             this.virusGroup.add(virus);
-            this.virusGroup.setVelocityX(virusSpeed);
         }
+        this.virusGroup.setVelocityX(virusSpeed);
     }
 
     update() {
@@ -66,6 +68,12 @@ class Play extends Phaser.Scene {
         }
         this.player1.update();
         this.background.tilePositionX += 4;
+        this.virusGroup.getChildren().forEach(function(virus) {
+            if(virus.x <= 0 - virus.width) {
+                this.virusGroup.killAndHide(virus);
+                this.virusGroup.remove(virus);
+            }
+        }, this);
     }
 
     playerHit(player, virus) {
