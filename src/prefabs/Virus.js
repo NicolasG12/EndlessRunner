@@ -6,6 +6,6 @@ class Virus extends Phaser.Physics.Arcade.Sprite {
    }
 
    update() {
-
+      //test
    }
 }
