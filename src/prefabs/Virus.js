@@ -7,9 +7,6 @@ class Virus extends Phaser.Physics.Arcade.Sprite {
    }
 
    update() {
-      if (this.x <= 0 - this.width) {
-         this.x = game.config.width;
-      }
    }
 
 }

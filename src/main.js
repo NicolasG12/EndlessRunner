@@ -17,7 +17,7 @@ let game = new Phaser.Game(config);
 
 let playerX = 100;
 //the y distance between lanes
-let differenceY = 75;
+let differenceY = 150;
 //speed for viruses
-let virusSpeed = -300;
+let virusSpeed = -200;
 let keyUP, keyDOWN, keyR;

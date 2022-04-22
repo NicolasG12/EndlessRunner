@@ -32,14 +32,15 @@ class Play extends Phaser.Scene {
         });
 
         //group for the platforms
-        // this.platforms = this.physics.add.staticGroup();
+        this.platforms = this.physics.add.staticGroup({
+            key: 'platform',
+            repeat: 2,
+            setXY: { x: game.config.width/2, y: 150, stepY: differenceY}
+        });
 
-        this.platform = this.physics.add.image(game.config.width/2, game.config.height/2, 'platform');
-        this.platform.body.allowGravity = false;
-        this.platform.setImmovable(true);
         //set the collision groups
-        this.physics.add.collider(this.player1, this.platform);
-        this.physics.add.collider(this.virusGroup, this.platform);
+        this.physics.add.collider(this.player1, this.platforms);
+        this.physics.add.collider(this.virusGroup, this.platforms);
         this.physics.add.overlap(this.player1, this.virusGroup, this.playerHit, null, this);
     }
     addVirus(posY) {
@@ -62,9 +63,9 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        let rand = Math.floor(Math.random() * 100);
-        if(rand == 5) {
-            this.addVirus(game.config.height/2 - 100);
+        if(Math.floor(Math.random() * 100) == 17) {
+            let lane = Math.floor(Math.random() * 3);
+            this.addVirus(lane * differenceY);
         }
         this.player1.update();
         this.background.tilePositionX += 4;
