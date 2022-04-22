@@ -5,9 +5,9 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.image('background', './assets/tempBackground.png');
-        this.load.image('email', './assets/pixil-frame-0.png');
+        this.load.image('email', './assets/01_player.png');
         this.load.image('platform', './assets/tempPlatform.png');
-        this.load.image('virus', './assets/tempEnemy.png');
+        this.load.image('virus', './assets/01_enemy.png');
     }
 
     create() {
@@ -18,29 +18,58 @@ class Play extends Phaser.Scene {
         //create the player
         this.player1 = new Email(this, playerX, game.config.height/2 - 100, 'email').setOrigin(0, 0);
         //group for the enemy viruses
-        this.viruses = this.physics.add.group();
-        this.virus1 = new Virus(this, game.config.width - 100, game.config.height/2 - 100, 'virus').setOrigin(0, 0);
-        this.viruses.add(this.virus1);
-        this.viruses.setVelocityX(-100);
-        //group for the platforms
-        this.platforms = this.physics.add.staticGroup();
+        this.virusGroup = this.physics.add.group({
+            removeCallback: function(virus) {
+                virus.scene.virusPool.add(virus);
+            }
+        });
 
-        // this.platform = this.physics.add.image(game.config.width/2, game.config.height/2, 'platform');
-        // this.platform.body.allowGravity = false;
-        // this.platform.setImmovable(true);
-        // this.platform.setVelocityX(50);
+        this.virusPool = this.physics.add.group({
+            removeCallback: function(virus) {
+                virus.scene.virusGroup.add(virus);
+            }
+        });
+
+        //group for the platforms
+        // this.platforms = this.physics.add.staticGroup();
+
+        this.platform = this.physics.add.image(game.config.width/2, game.config.height/2, 'platform');
+        this.platform.body.allowGravity = false;
+        this.platform.setImmovable(true);
         //set the collision groups
         this.physics.add.collider(this.player1, this.platform);
-        this.physics.add.overlap(this.player1, this.viruses, this.playerHit, null, this);
+        this.physics.add.collider(this.virusGroup, this.platform);
+        this.physics.add.overlap(this.player1, this.virusGroup, this.playerHit, null, this);
+    }
+    addVirus(posY) {
+        let virus;
+        console.log(this.virusPool.getLength());
+        if(this.virusPool.getLength()) {
+            virus = this.virusPool.getFirst();
+            virus.y = posY;
+            virus.active = true;
+            virus.visible = true;
+            this.virusPool.remove(virus);
+        }
+        else {
+            virus = new Virus(this, game.config.width - 100, posY, 'virus').setOrigin(0, 0);
+            virus.setImmovable(true);
+            this.virusGroup.add(virus);
+            this.virusGroup.setVelocityX(virusSpeed);
+        }
     }
 
     update() {
+        let rand = Math.floor(Math.random() * 100);
+        if(rand == 5) {
+            this.addVirus(game.config.height/2 - 100);
+        }
         this.player1.update();
-        this.virus1.update();
         this.background.tilePositionX += 4;
     }
 
     playerHit(player, virus) {
+        // this.scene.start("gameOver");
         console.log("Game over");
     }
 }
