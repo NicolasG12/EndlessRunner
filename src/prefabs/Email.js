@@ -12,6 +12,5 @@ class Email extends Phaser.Physics.Arcade.Sprite {
         if(Phaser.Input.Keyboard.JustDown(keyDOWN) && this.y < 400) {
             this.y += differenceY;
         }
-        console.log(this.y);
     }
 }

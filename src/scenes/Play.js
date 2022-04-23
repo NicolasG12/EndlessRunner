@@ -91,7 +91,7 @@ class Play extends Phaser.Scene {
             this.virusPool.remove(virus);
         }
         else {
-            virus = new Virus(this, game.config.width, posY, 'virus').setOrigin(0, 0);
+            virus = new Virus(this, game.config.width + 100, posY, 'virus').setOrigin(0, 0);
             virus.setImmovable(true);
             this.virusGroup.add(virus);
         }
@@ -120,7 +120,7 @@ class Play extends Phaser.Scene {
         this.platformBot4.update();
         let rand = Math.floor(Math.random() * 300);
         if(rand < 3) {
-            this.addVirus(rand * differenceY + 100);
+            this.addVirus(rand * differenceY + 95);
         }
         this.virusGroup.getChildren().forEach((virus) => {
             if(virus.x <= 0 - virus.width) {
