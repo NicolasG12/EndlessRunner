@@ -31,13 +31,6 @@ class Play extends Phaser.Scene {
             }
         });
 
-        //group for the platforms
-        this.platforms = this.physics.add.staticGroup({
-            key: 'platform',
-            repeat: 2,
-            setXY: { x: game.config.width/2, y: 150, stepY: differenceY}
-        });
-
         //set the collision groups
         this.physics.add.collider(this.player1, this.platforms);
         this.physics.add.collider(this.virusGroup, this.platforms);
