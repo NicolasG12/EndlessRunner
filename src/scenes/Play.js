@@ -15,30 +15,30 @@ class Play extends Phaser.Scene {
         // Initialize Player
         this.player1 = new Email(this, playerX, game.config.height / 2 - 100, 'email').setOrigin(0, 0);
         // Initialize Top Platforms
-        this.platformTop1 = new Platform(this, 0, game.config.height / 4, 'platform', 0, 4).setOrigin(0, 0);;
-        this.platformTop2 = new Platform(this, game.config.width / 2, game.config.height / 4, 'platform', 0, 4).setOrigin(0, 0);;
-        this.platformTop3 = new Platform(this, game.config.width, game.config.height / 4, 'platform', 0, 4).setOrigin(0, 0);;
-        this.platformTop4 = new Platform(this, game.config.width + (game.config.width / 2), game.config.height / 4, 'platform', 0, 4).setOrigin(0, 0);;
+        this.platformTop1 = new Platform(this, 0, game.config.height / 4, 'platform', 0, 4).setOrigin(0, 0);
+        this.platformTop2 = new Platform(this, game.config.width / 2, game.config.height / 4, 'platform', 0, 4).setOrigin(0, 0);
+        this.platformTop3 = new Platform(this, game.config.width, game.config.height / 4, 'platform', 0, 4).setOrigin(0, 0);
+        this.platformTop4 = new Platform(this, game.config.width + (game.config.width / 2), game.config.height / 4, 'platform', 0, 4).setOrigin(0, 0);
 
         this.physics.add.collider(this.player1, this.platformTop1);
         this.physics.add.collider(this.player1, this.platformTop2);
         this.physics.add.collider(this.player1, this.platformTop3);
         this.physics.add.collider(this.player1, this.platformTop4);
         // Initialize Middle Platforms
-        this.platformMid1 = new Platform(this, 0, game.config.height / 2, 'platform', 0, 4).setOrigin(0, 0);;
-        this.platformMid2 = new Platform(this, game.config.width / 2, game.config.height / 2, 'platform', 0, 4).setOrigin(0, 0);;
-        this.platformMid3 = new Platform(this, game.config.width, game.config.height / 2, 'platform', 0, 4).setOrigin(0, 0);;
-        this.platformMid4 = new Platform(this, game.config.width + (game.config.width / 2), game.config.height / 2, 'platform', 0, 4).setOrigin(0, 0);;
+        this.platformMid1 = new Platform(this, 0, game.config.height / 2, 'platform', 0, 4).setOrigin(0, 0);
+        this.platformMid2 = new Platform(this, game.config.width / 2, game.config.height / 2, 'platform', 0, 4).setOrigin(0, 0);
+        this.platformMid3 = new Platform(this, game.config.width, game.config.height / 2, 'platform', 0, 4).setOrigin(0, 0);
+        this.platformMid4 = new Platform(this, game.config.width + (game.config.width / 2), game.config.height / 2, 'platform', 0, 4).setOrigin(0, 0);
 
         this.physics.add.collider(this.player1, this.platformMid1);
         this.physics.add.collider(this.player1, this.platformMid2);
         this.physics.add.collider(this.player1, this.platformMid3);
         this.physics.add.collider(this.player1, this.platformMid4);
         // Initialize Bot Platforms
-        this.platformBot1 = new Platform(this, 0, (game.config.height / 4) * 3, 'platform', 0, 4).setOrigin(0, 0);;
-        this.platformBot2 = new Platform(this, game.config.width / 2, (game.config.height / 4) * 3, 'platform', 0, 4).setOrigin(0, 0);;
+        this.platformBot1 = new Platform(this, 0, (game.config.height / 4) * 3, 'platform', 0, 4).setOrigin(0, 0);
+        this.platformBot2 = new Platform(this, game.config.width / 2, (game.config.height / 4) * 3, 'platform', 0, 4).setOrigin(0, 0);
         this.platformBot3 = new Platform(this, game.config.width, (game.config.height / 4) * 3, 'platform', 0, 4).setOrigin(0, 0);;
-        this.platformBot4 = new Platform(this, game.config.width + (game.config.width / 2), (game.config.height / 4) * 3, 'platform', 0, 4).setOrigin(0, 0);;
+        this.platformBot4 = new Platform(this, game.config.width + (game.config.width / 2), (game.config.height / 4) * 3, 'platform', 0, 4).setOrigin(0, 0);
 
         this.physics.add.collider(this.player1, this.platformBot1);
         this.physics.add.collider(this.player1, this.platformBot2);
