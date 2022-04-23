@@ -55,7 +55,7 @@ class Play extends Phaser.Scene {
             this.virusPool.remove(virus);
         }
         else {
-            virus = new Virus(this, game.config.width - 100, posY, 'virus').setOrigin(0, 0);
+            virus = new Virus(this, game.config.width, posY, 'virus').setOrigin(0, 0);
             virus.setImmovable(true);
             this.virusGroup.add(virus);
         }
@@ -69,7 +69,7 @@ class Play extends Phaser.Scene {
         }
         this.player1.update();
         this.background.tilePositionX += 4;
-        this.virusGroup.getChildren().forEach(function(virus) {
+        this.virusGroup.getChildren().forEach((virus) => {
             if(virus.x <= 0 - virus.width) {
                 this.virusGroup.killAndHide(virus);
                 this.virusGroup.remove(virus);
@@ -79,6 +79,8 @@ class Play extends Phaser.Scene {
 
     playerHit(player, virus) {
         // this.scene.start("gameOver");
+        this.virusGroup.killAndHide(virus);
+        this.virusGroup.remove(virus);
         console.log("Game over");
     }
 }
