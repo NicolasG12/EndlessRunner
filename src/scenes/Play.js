@@ -123,8 +123,6 @@ class Play extends Phaser.Scene {
             let lane = Math.floor(Math.random() * 3);
             this.addVirus(lane * differenceY);
         }
-        this.player1.update();
-        this.background.tilePositionX += 4;
         this.virusGroup.getChildren().forEach((virus) => {
             if(virus.x <= 0 - virus.width) {
                 this.virusGroup.killAndHide(virus);
