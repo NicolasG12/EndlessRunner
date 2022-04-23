@@ -6,11 +6,12 @@ class Email extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        if(Phaser.Input.Keyboard.JustDown(keyUP)) {
+        if(Phaser.Input.Keyboard.JustDown(keyUP) && this.y > 110) {
             this.y -= differenceY;
         }
-        if(Phaser.Input.Keyboard.JustDown(keyDOWN)) {
+        if(Phaser.Input.Keyboard.JustDown(keyDOWN) && this.y < 400) {
             this.y += differenceY;
         }
+        console.log(this.y);
     }
 }

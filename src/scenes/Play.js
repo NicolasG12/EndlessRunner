@@ -14,7 +14,7 @@ class Play extends Phaser.Scene {
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
         // Initialize Player
-        this.player1 = new Email(this, playerX, game.config.height / 2 - 100, 'email').setOrigin(0, 0);
+        this.player1 = new Email(this, playerX, game.config.height / 2 - 50, 'email').setOrigin(0, 0);
         // Initialize Top Platforms
 
         this.platformTop = [];
@@ -118,10 +118,9 @@ class Play extends Phaser.Scene {
         this.platformBot2.update();
         this.platformBot3.update();
         this.platformBot4.update();
-
-        if(Math.floor(Math.random() * 100) == 17) {
-            let lane = Math.floor(Math.random() * 3);
-            this.addVirus(lane * differenceY);
+        let rand = Math.floor(Math.random() * 300);
+        if(rand < 3) {
+            this.addVirus(rand * differenceY + 100);
         }
         this.virusGroup.getChildren().forEach((virus) => {
             if(virus.x <= 0 - virus.width) {
@@ -137,5 +136,6 @@ class Play extends Phaser.Scene {
         this.virusGroup.remove(virus);
         console.log("Game over");
     }
+
 }
 
