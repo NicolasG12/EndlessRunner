@@ -150,7 +150,7 @@ class Play extends Phaser.Scene {
         // this.platformBot4.update();
         let rand = Math.floor(Math.random() * 300);
         if(rand < 3) {
-            this.addVirus(rand * differenceY + 95);
+            this.addVirus(rand * differenceY + 90);
         }
         this.virusGroup.getChildren().forEach((virus) => {
             if(virus.x <= 0 - virus.width) {
