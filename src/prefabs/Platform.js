@@ -10,7 +10,7 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         //move platform left
-        this.x -= this.moveSpeed;
+        // this.x -= this.moveSpeed;
         // wraps around from left edge to right edge
         if (this.x <= 0 - this.width) {
             this.reset();
@@ -19,6 +19,6 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
 
     // position reset
     reset() {
-        this.x = game.config.width + this.width/2;
+        this.x = game.config.width + game.config.width/2;
     }
 }
