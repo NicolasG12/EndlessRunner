@@ -95,7 +95,6 @@ class Play extends Phaser.Scene {
         if(Math.floor(Math.random() * 100) == 17) {
             let lane = (Math.floor(Math.random() * 3))
             this.addVirus(lane * differenceY + 90);
-            console.log(lane * differenceY + 90);
         }
         this.virusGroup.getChildren().forEach((virus) => {
             if(virus.x <= 0 - virus.width) {
