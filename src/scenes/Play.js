@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('email', './assets/01_tempPlayer.png');
         this.load.image('platform', './assets/tempPlatform.png');
         this.load.image('virus', './assets/01_tempVirus.png');
+        this.load.spritesheet('virusAnim', './assets/Skull Animation Draft.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4});
     }
 
     create() {
@@ -58,6 +59,13 @@ class Play extends Phaser.Scene {
 
         // this.virusPool = this.physics.add.group();
 
+        //create an animation for the virus
+        this.anims.create({
+            key: 'virusAnimation',
+            frames: this.anims.generateFrameNumbers('virusAnim', {start: 0, end: 4, first: 0}),
+            frameRate: 30
+        });
+
         //set the collision groups
         this.physics.add.collider(this.player1, this.platformTopGroup);
         this.physics.add.collider(this.player1, this.platformMidGroup);
@@ -80,7 +88,7 @@ class Play extends Phaser.Scene {
         //     this.virusPool.remove(virus);
         // }
         // else {
-        virus = new Virus(this, game.config.width + 100, posY, 'virus').setOrigin(0, 0);
+        virus = new Virus(this, game.config.width + 100, posY, 'virusAnim').setOrigin(0, 0);
         this.virusGroup.add(virus);
         //}
         this.virusGroup.setVelocityX(virusSpeed);
