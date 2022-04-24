@@ -13,8 +13,10 @@ class Play extends Phaser.Scene {
     create() {
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
+
         // Initialize Player
         this.player1 = new Email(this, playerX, game.config.height / 2 - 100, 'email').setOrigin(0, 0);
+
         // Initialize Top Platforms
 
         this.platformTopGroup = this.physics.add.group({

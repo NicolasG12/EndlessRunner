@@ -12,7 +12,6 @@ let config = {
    scene:  [Menu, Play, GameOver]
 }
 
-
 let game = new Phaser.Game(config);
 
 let playerX = 100;
