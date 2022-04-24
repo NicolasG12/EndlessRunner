@@ -125,6 +125,7 @@ class Play extends Phaser.Scene {
     playerHit(player, virus) {
         this.virusGroup.killAndHide(virus);
         this.virusGroup.remove(virus);
+        // Go to Game Over Screen
         this.scene.start("gameOver");
         console.log("Game over");
     }
