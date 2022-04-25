@@ -5,9 +5,9 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.image('background', './assets/tempBackground.png');
-        this.load.image('email', './assets/01_tempPlayer.png');
         this.load.image('platform', './assets/tempPlatform.png');
         this.load.spritesheet('virus', './assets/Skull Animation Draft.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4});
+        this.load.spritesheet('email', './assets/Mail-E Animation Draft.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2});
     }
 
     create() {
@@ -66,6 +66,12 @@ class Play extends Phaser.Scene {
             frameRate: 15,
             repeat: -1
         });
+        this.anims.create({
+            key: 'emailAnimation',
+            frames: this.anims.generateFrameNumbers('email', {start: 0, end: 4, first: 0}),
+            frameRate: 15,
+            repeat: -1
+        })
 
         //set the collision groups
         this.physics.add.collider(this.player1, this.platformTopGroup);
@@ -81,6 +87,7 @@ class Play extends Phaser.Scene {
             let lane = (Math.floor(Math.random() * 3))
             this.addVirus(lane * differenceY + 90);
         }, this.spawnTime);
+        this.player1.play('emailAnimation');
 
     }
 
