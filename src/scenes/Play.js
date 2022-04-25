@@ -7,11 +7,11 @@ class Play extends Phaser.Scene {
         this.load.image('background', './assets/tempBackground.png');
         this.load.image('email', './assets/01_tempPlayer.png');
         this.load.image('platform', './assets/tempPlatform.png');
-        this.load.image('virus', './assets/01_tempVirus.png');
-        this.load.spritesheet('virusAnim', './assets/Skull Animation Draft.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4});
+        this.load.spritesheet('virus', './assets/Skull Animation Draft.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4});
     }
 
     create() {
+        this.spawnTime = 1000;
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
 
@@ -62,8 +62,9 @@ class Play extends Phaser.Scene {
         //create an animation for the virus
         this.anims.create({
             key: 'virusAnimation',
-            frames: this.anims.generateFrameNumbers('virusAnim', {start: 0, end: 4, first: 0}),
-            frameRate: 30
+            frames: this.anims.generateFrameNumbers('virus', {start: 0, end: 4, first: 0}),
+            frameRate: 15,
+            repeat: -1
         });
 
         //set the collision groups
@@ -75,29 +76,20 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.virusGroup, this.platformBotGroup);
         this.physics.add.overlap(this.player1, this.virusGroup, this.playerHit, null, this);
 
+        //spawn enemies every second
         setInterval( () => {
             let lane = (Math.floor(Math.random() * 3))
             this.addVirus(lane * differenceY + 90);
-        }, 1000);
+        }, this.spawnTime);
 
     }
 
     addVirus(posY) {
         let virus;
-        // if(this.virusPool.getLength()) {
-        //     virus = this.virusPool.getFirst();
-        //     virus.x = game.config.width;
-        //     virus.y = posY;
-        //     console.log(virus.y);
-        //     virus.active = true;
-        //     virus.visible = true;
-        //     this.virusPool.remove(virus);
-        // }
-        // else {
-        virus = new Virus(this, game.config.width + 100, posY, 'virusAnim').setOrigin(0, 0);
+        virus = new Virus(this, game.config.width, posY, 'virus').setOrigin(0, 0);
         this.virusGroup.add(virus);
-        //}
         this.virusGroup.setVelocityX(virusSpeed);
+        virus.play('virusAnimation');
     }
 
     update() {
