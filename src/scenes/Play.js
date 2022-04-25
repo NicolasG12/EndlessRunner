@@ -74,6 +74,12 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.virusGroup, this.platformMidGroup);
         this.physics.add.collider(this.virusGroup, this.platformBotGroup);
         this.physics.add.overlap(this.player1, this.virusGroup, this.playerHit, null, this);
+
+        setInterval( () => {
+            let lane = (Math.floor(Math.random() * 3))
+            this.addVirus(lane * differenceY + 90);
+        }, 1000);
+
     }
 
     addVirus(posY) {
@@ -99,11 +105,6 @@ class Play extends Phaser.Scene {
         this.background.tilePositionX += 4;
         // Update Player
         this.player1.update();
-        
-        if(Math.floor(Math.random() * 100) == 17) {
-            let lane = (Math.floor(Math.random() * 3))
-            this.addVirus(lane * differenceY + 90);
-        }
         this.virusGroup.getChildren().forEach((virus) => {
             if(virus.x <= 0 - virus.width) {
                 this.virusGroup.killAndHide(virus);
