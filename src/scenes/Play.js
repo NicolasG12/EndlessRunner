@@ -99,8 +99,7 @@ class Play extends Phaser.Scene {
         this.player1.update();
         this.virusGroup.getChildren().forEach((virus) => {
             if(virus.x <= 0 - virus.width) {
-                this.virusGroup.killAndHide(virus);
-                this.virusGroup.remove(virus);
+                virus.destroy();
             }
         }, this);
 

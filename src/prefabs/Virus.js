@@ -6,6 +6,5 @@ class Virus extends Phaser.Physics.Arcade.Sprite {
    }
 
    update() {
-      this.anim.play('virusAnimation');
    }
 }
