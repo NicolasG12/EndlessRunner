@@ -51,7 +51,7 @@ class Play extends Phaser.Scene {
         // Create an animation for the player
         this.anims.create({
             key: 'emailAnimation',
-            frames: this.anims.generateFrameNumbers('email', { start: 0, end: 4, first: 0 }),
+            frames: this.anims.generateFrameNumbers('email', { start: 0, end: 2, first: 0 }),
             frameRate: 15,
             repeat: -1
         });
@@ -70,11 +70,7 @@ class Play extends Phaser.Scene {
 
         // Spawn enemies every second
         setInterval(() => {
-            let lane = (Math.floor(Math.random() * 3))
-            let virus = this.physics.add.sprite(game.config.width, (lane * differenceY) + 85, 'virus').setOrigin(0, 0);
-            this.viruses.add(virus);
-            virus.play('virusAnimation');
-            this.viruses.setVelocityX(virusSpeed);
+            this.addVirus(this.viruses, 'virus');
         }, this.spawnTime);
         
         // Collision
@@ -85,6 +81,14 @@ class Play extends Phaser.Scene {
         // Add input keys
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+    }
+
+    addVirus(virusGroup, virusType) {
+        let lane = (Math.floor(Math.random() * 3));
+        let virus = this.physics.add.sprite(game.config.width, (lane * differenceY) + 85, virusType).setOrigin(0, 0);
+        virusGroup.add(virus);
+        virus.play('virusAnimation');
+        virusGroup.setVelocityX(virusSpeed);
     }
 
     update() {
