@@ -28,19 +28,6 @@ class Play extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
         // this.numBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'numBackground').setOrigin(0, 0);
 
-        let scoreConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 100
-        }
-        this.score = this.add.text(game.config.width - 500, )
         // Initialize Platform Group
         this.platforms = this.add.group();
 
@@ -120,6 +107,21 @@ class Play extends Phaser.Scene {
         // Add input keys
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+
+        //create the score display
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#000000',
+            color: '#FFFFFF',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.score = this.add.text(game.config.width - 100, 45, Math.floor(this.time.now / 1000), scoreConfig);
     }
 
     addVirus(virusGroup, virusType, posY, speed) {
@@ -130,6 +132,9 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        if(!this.gameOver) {
+            this.score.text = Math.floor(this.time.now / 1000);
+        }
         //increase difficulty
         if(this.time.now % 10000 < 10) {
             this.virusSpeed1 -= 100;
@@ -157,6 +162,7 @@ class Play extends Phaser.Scene {
 
     // Player Hit Function
     playerHit(virus) {
+        this.gameOver = true;
         this.viruses.killAndHide(virus);
         this.viruses.remove(virus);
         this.player1.play('emailDeathAnimation');
