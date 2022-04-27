@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         this.load.image('platformTile', './assets/tempPlatTile.png');
         this.load.image('shield', './assets/Shield Draft.png');
         this.load.image('background', './assets/tempBackground.png');
+        this.load.image('virus2', './assets/02_virus.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
         this.load.spritesheet('virus', './assets/Skull Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4 });
         this.load.spritesheet('email', './assets/Mail-E Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2 });
@@ -105,7 +106,7 @@ class Play extends Phaser.Scene {
         }, this.spawnTime);
         //spawn a special type of enemy every 2.5 seconds
         setInterval(() => {
-            this.addVirus(this.specialViruses, 'shield', this.player1.y, this.virusSpeed2);
+            this.addVirus(this.specialViruses, 'virus2', this.player1.y, this.virusSpeed2);
         }, this.spawnTime * 2.5)
         //have these enemies change lanes at an interval of 2 seconds
         // setInterval(() => {
