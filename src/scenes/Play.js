@@ -163,12 +163,12 @@ class Play extends Phaser.Scene {
         this.player1.setImmovable(true);
         clearInterval(this.spawnEnemy1);
         clearInterval(this.spawnEnemy2);
-
-        //Go to Game Over Screen
+        this.viruses.setVelocityX(0);
+        this.specialViruses.setVelocityX(0);
+        this.scrollSpeed = 0;
         setTimeout(() => {
             this.scene.start("gameOver");
-        }, 2300);
-
+        }, 2000);
     }
 
 }
