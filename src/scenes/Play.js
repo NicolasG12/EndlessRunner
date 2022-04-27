@@ -66,8 +66,9 @@ class Play extends Phaser.Scene {
         }
 
         // Initialize Player
-        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(1, 0.5);
-        this.player1.body.setSize(40, 48, true);
+        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
+        this.player1.setSize(35, 48)
+        this.player1.setOffset(14, 0);
         // Create an animation for the player
         this.anims.create({
             key: 'emailAnimation',
