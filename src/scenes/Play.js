@@ -141,6 +141,10 @@ class Play extends Phaser.Scene {
             this.virusSpeed2 -= 100;
             this.scrollSpeed += 1.5;
             this.platformSpeed += 1.5; 
+            if(this.spawnTime > 500) {
+                this.spawnTime -= 100;
+                console.log(this.spawnTime);
+            }
         }
         // Update Background
         this.background.tilePositionX += this.scrollSpeed;
