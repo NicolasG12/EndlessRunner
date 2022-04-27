@@ -10,6 +10,7 @@ class Play extends Phaser.Scene {
         // this.load.image('numBackground', './assets/numberBackground.png');
         this.load.spritesheet('virus', './assets/Skull Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4 });
         this.load.spritesheet('email', './assets/Mail-E Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2 });
+        this.load.spritesheet('emailDeath', './assets/Mail-E Game Over Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 10 });
     }
 
     create() {
@@ -75,6 +76,13 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('email', { start: 0, end: 2, first: 0 }),
             frameRate: 15,
             repeat: -1
+        });
+
+        this.anims.create({
+            key: 'emailDeathAnimation',
+            frames: this.anims.generateFrameNumbers('emailDeath', { start: 0, end: 10, first: 0 }),
+            frameRate: 15,
+            repeat: 1
         });
         this.player1.play('emailAnimation');
 
@@ -168,12 +176,16 @@ class Play extends Phaser.Scene {
     }
 
     // Player Hit Function
-    playerHit(player, virus) {
+    playerHit(virus) {
         this.viruses.killAndHide(virus);
         this.viruses.remove(virus);
+        this.player1.play('emailDeathAnimation');
 
         // Go to Game Over Screen
-        this.scene.start("gameOver");
+        setTimeout(() => {
+            this.scene.start("gameOver");
+        }, 1000)
+
         console.log("Game over");
     }
 
