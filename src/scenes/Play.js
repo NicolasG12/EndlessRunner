@@ -6,8 +6,8 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.image('platformTile', './assets/tempPlatTile.png');
         this.load.image('shield', './assets/Shield Draft.png');
-        this.load.image('background', './assets/background.png');
-        this.load.image('numBackground', './assets/numberBackground.png');
+        this.load.image('background', './assets/tempBackground.png');
+        // this.load.image('numBackground', './assets/numberBackground.png');
         this.load.spritesheet('virus', './assets/Skull Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4 });
         this.load.spritesheet('email', './assets/Mail-E Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2 });
     }
@@ -17,13 +17,27 @@ class Play extends Phaser.Scene {
         this.tileSize = 20;
         this.spawnTime = 1000;
         this.scrollSpeed = 4;
-        this.virusSpeed = -250;
+        this.virusSpeed1 = -250;
+        this.virusSpeed2 = -400;
         this.platformSpeed = 4;
 
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
-        this.numBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'numBackground').setOrigin(0, 0);
+        // this.numBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'numBackground').setOrigin(0, 0);
 
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.score = this.add.text(game.config.width - 500, )
         // Initialize Platform Group
         this.platforms = this.add.group();
 
@@ -52,7 +66,8 @@ class Play extends Phaser.Scene {
         }
 
         // Initialize Player
-        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
+        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(1, 0.5);
+        this.player1.body.setSize(40, 48, true);
         // Create an animation for the player
         this.anims.create({
             key: 'emailAnimation',
@@ -77,11 +92,11 @@ class Play extends Phaser.Scene {
         // Spawn enemies every second
         setInterval(() => {
             let lane = (Math.floor(Math.random() * 3));
-            this.addVirus(this.viruses, 'virus', (lane * differenceY) + 85, this.virusSpeed);
+            this.addVirus(this.viruses, 'virus', (lane * differenceY) + 85, this.virusSpeed1);
         }, this.spawnTime);
         //spawn a special type of enemy every 2.5 seconds
         setInterval(() => {
-            this.addVirus(this.specialViruses, 'shield', this.player1.y, this.virusSpeed * 2);
+            this.addVirus(this.specialViruses, 'shield', this.player1.y, this.virusSpeed2);
         }, this.spawnTime * 2.5)
         //have these enemies change lanes at an interval of 2 seconds
         // setInterval(() => {
@@ -124,9 +139,17 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        console.log(this.time.now);
+        //increase difficulty
+        if(this.time.now % 10000 < 10) {
+            this.virusSpeed1 -= 100;
+            this.virusSpeed2 -= 100;
+            this.scrollSpeed += 1.5;
+            this.platformSpeed += 1.5; 
+        }
         // Update Background
         this.background.tilePositionX += this.scrollSpeed;
-        this.numBackground.tilePositionX += this.scrollSpeed * 1.5;
+        // this.numBackground.tilePositionX += this.scrollSpeed * 1.5;
         this.platforms.getChildren().forEach((tile) => {
             tile.setX(tile.x - this.scrollSpeed);
             this.physics.world.wrap(tile, 0);
