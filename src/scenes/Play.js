@@ -6,6 +6,7 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.image('background', './assets/tempBackground.png');
         this.load.image('platformTile', './assets/tempPlatTile.png');
+        this.load.image('shield', './assets/Shield Draft.png');
         this.load.spritesheet('virus', './assets/Skull Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4 });
         this.load.spritesheet('email', './assets/Mail-E Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2 });
     }
@@ -81,6 +82,7 @@ class Play extends Phaser.Scene {
         // Collision
         this.physics.add.collider(this.player1, this.platforms);
         this.physics.add.collider(this.viruses, this.platforms);
+        this.physics.add.collider(this.specialViruses, this.platforms);
         this.physics.add.overlap(this.player1, this.viruses, this.playerHit, null, this);
 
         // Add input keys
@@ -92,7 +94,7 @@ class Play extends Phaser.Scene {
         let lane = (Math.floor(Math.random() * 3));
         let virus = this.physics.add.sprite(game.config.width, (lane * differenceY) + 85, virusType).setOrigin(0, 0);
         virusGroup.add(virus);
-        virus.play('virusAnimation');
+        // virus.play('virusAnimation');
         virusGroup.setVelocityX(virusSpeed);
     }
 
