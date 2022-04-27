@@ -74,16 +74,37 @@ class Play extends Phaser.Scene {
         setInterval(() => {
             this.addVirus(this.viruses, 'virus');
         }, this.spawnTime);
-
+        //spawn a special type of enemy every 2.5 seconds
         setInterval(() => {
             this.addVirus(this.specialViruses, 'shield');
         }, this.spawnTime * 2.5)
+        //have these enemies change lanes at an interval of 2 seconds
+        setInterval(() => {
+            this.specialViruses.getChildren().forEach((virus) => {
+                if(virus.y < game.config.height/4) {
+                    virus.y += differenceY;
+                } else if (virus.y > game.config.height/2) {
+                    virus.y -= differenceY;
+                } else {
+                    let rand = Math.ceil(Math.random() * 2);
+                    switch(rand) {
+                        case 1:
+                            virus.y -= differenceY;
+                        case 2:
+                            virus.y += differenceY;
+                        default:
+                            break;
+                    }
+                }
+            }, this)
+        }, this.spawnTime *2);
         
         // Collision
         this.physics.add.collider(this.player1, this.platforms);
         this.physics.add.collider(this.viruses, this.platforms);
         this.physics.add.collider(this.specialViruses, this.platforms);
         this.physics.add.overlap(this.player1, this.viruses, this.playerHit, null, this);
+        this.physics.add.overlap(this.player1, this.specialViruses, this.playerHit, null, this);
 
         // Add input keys
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
