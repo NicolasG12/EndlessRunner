@@ -60,6 +60,7 @@ class Play extends Phaser.Scene {
 
         // Group for the enemy viruses
         this.viruses = this.physics.add.group();
+        this.specialViruses = this.physics.add.group();
         // Create an animation for the virus
         this.anims.create({
             key: 'virusAnimation',
@@ -72,6 +73,10 @@ class Play extends Phaser.Scene {
         setInterval(() => {
             this.addVirus(this.viruses, 'virus');
         }, this.spawnTime);
+
+        setInterval(() => {
+            this.addVirus(this.specialViruses, 'shield');
+        }, this.spawnTime * 2.5)
         
         // Collision
         this.physics.add.collider(this.player1, this.platforms);
