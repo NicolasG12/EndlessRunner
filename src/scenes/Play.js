@@ -4,9 +4,10 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('background', './assets/tempBackground.png');
         this.load.image('platformTile', './assets/tempPlatTile.png');
         this.load.image('shield', './assets/Shield Draft.png');
+        this.load.image('background', './assets/background.png');
+        this.load.image('numBackground', './assets/numberBackground.png');
         this.load.spritesheet('virus', './assets/Skull Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4 });
         this.load.spritesheet('email', './assets/Mail-E Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2 });
     }
@@ -21,6 +22,7 @@ class Play extends Phaser.Scene {
 
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
+        this.numBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'numBackground').setOrigin(0, 0);
 
         // Initialize Platform Group
         this.platforms = this.add.group();
@@ -50,7 +52,7 @@ class Play extends Phaser.Scene {
         }
 
         // Initialize Player
-        this.player1 = new Email(this, playerX, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
+        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
         // Create an animation for the player
         this.anims.create({
             key: 'emailAnimation',
@@ -75,11 +77,11 @@ class Play extends Phaser.Scene {
         // Spawn enemies every second
         setInterval(() => {
             let lane = (Math.floor(Math.random() * 3));
-            this.addVirus(this.viruses, 'virus', (lane * differenceY) + 85, virusSpeed);
+            this.addVirus(this.viruses, 'virus', (lane * differenceY) + 85, this.virusSpeed);
         }, this.spawnTime);
         //spawn a special type of enemy every 2.5 seconds
         setInterval(() => {
-            this.addVirus(this.specialViruses, 'shield', this.player1.y, virusSpeed * 2);
+            this.addVirus(this.specialViruses, 'shield', this.player1.y, this.virusSpeed * 2);
         }, this.spawnTime * 2.5)
         //have these enemies change lanes at an interval of 2 seconds
         // setInterval(() => {
@@ -124,6 +126,7 @@ class Play extends Phaser.Scene {
     update() {
         // Update Background
         this.background.tilePositionX += this.scrollSpeed;
+        this.numBackground.tilePositionX += this.scrollSpeed * 1.5;
         this.platforms.getChildren().forEach((tile) => {
             tile.setX(tile.x - this.scrollSpeed);
             this.physics.world.wrap(tile, 0);
