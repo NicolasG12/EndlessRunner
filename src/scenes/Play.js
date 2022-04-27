@@ -16,6 +16,8 @@ class Play extends Phaser.Scene {
         this.tileSize = 20;
         this.spawnTime = 1000;
         this.scrollSpeed = 4;
+        this.virusSpeed = -250;
+        this.platformSpeed = 4;
 
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
@@ -72,32 +74,33 @@ class Play extends Phaser.Scene {
 
         // Spawn enemies every second
         setInterval(() => {
-            this.addVirus(this.viruses, 'virus');
+            let lane = (Math.floor(Math.random() * 3));
+            this.addVirus(this.viruses, 'virus', (lane * differenceY) + 85, virusSpeed);
         }, this.spawnTime);
         //spawn a special type of enemy every 2.5 seconds
         setInterval(() => {
-            this.addVirus(this.specialViruses, 'shield');
+            this.addVirus(this.specialViruses, 'shield', this.player1.y, virusSpeed * 2);
         }, this.spawnTime * 2.5)
         //have these enemies change lanes at an interval of 2 seconds
-        setInterval(() => {
-            this.specialViruses.getChildren().forEach((virus) => {
-                if(virus.y < game.config.height/4) {
-                    virus.y += differenceY;
-                } else if (virus.y > game.config.height/2) {
-                    virus.y -= differenceY;
-                } else {
-                    let rand = Math.ceil(Math.random() * 2);
-                    switch(rand) {
-                        case 1:
-                            virus.y -= differenceY;
-                        case 2:
-                            virus.y += differenceY;
-                        default:
-                            break;
-                    }
-                }
-            }, this)
-        }, this.spawnTime *2);
+        // setInterval(() => {
+        //     this.specialViruses.getChildren().forEach((virus) => {
+        //         if(virus.y < game.config.height/4) {
+        //             virus.y += differenceY;
+        //         } else if (virus.y > game.config.height/2) {
+        //             virus.y -= differenceY;
+        //         } else {
+        //             let rand = Math.ceil(Math.random() * 2);
+        //             switch(rand) {
+        //                 case 1:
+        //                     virus.y -= differenceY;
+        //                 case 2:
+        //                     virus.y += differenceY;
+        //                 default:
+        //                     break;
+        //             }
+        //         }
+        //     }, this)
+        // }, this.spawnTime * 2.5);
         
         // Collision
         this.physics.add.collider(this.player1, this.platforms);
@@ -111,12 +114,11 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
     }
 
-    addVirus(virusGroup, virusType) {
-        let lane = (Math.floor(Math.random() * 3));
-        let virus = this.physics.add.sprite(game.config.width, (lane * differenceY) + 85, virusType).setOrigin(0, 0);
+    addVirus(virusGroup, virusType, posY, speed) {
+        let virus = this.physics.add.sprite(game.config.width, posY, virusType).setOrigin(0, 0);
         virusGroup.add(virus);
         // virus.play('virusAnimation');
-        virusGroup.setVelocityX(virusSpeed);
+        virusGroup.setVelocityX(speed);
     }
 
     update() {
