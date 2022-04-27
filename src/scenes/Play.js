@@ -22,6 +22,7 @@ class Play extends Phaser.Scene {
         this.virusSpeed1 = -250;
         this.virusSpeed2 = -400;
         this.platformSpeed = 4;
+        this.gameOver = false;
 
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
@@ -100,34 +101,14 @@ class Play extends Phaser.Scene {
         });
 
         // Spawn enemies every second
-        setInterval(() => {
-            let lane = (Math.floor(Math.random() * 3));
-            this.addVirus(this.viruses, 'virus', (lane * differenceY) + 85, this.virusSpeed1);
-        }, this.spawnTime);
-        //spawn a special type of enemy every 2.5 seconds
-        setInterval(() => {
-            this.addVirus(this.specialViruses, 'virus2', this.player1.y, this.virusSpeed2);
-        }, this.spawnTime * 2.5)
-        //have these enemies change lanes at an interval of 2 seconds
-        // setInterval(() => {
-        //     this.specialViruses.getChildren().forEach((virus) => {
-        //         if(virus.y < game.config.height/4) {
-        //             virus.y += differenceY;
-        //         } else if (virus.y > game.config.height/2) {
-        //             virus.y -= differenceY;
-        //         } else {
-        //             let rand = Math.ceil(Math.random() * 2);
-        //             switch(rand) {
-        //                 case 1:
-        //                     virus.y -= differenceY;
-        //                 case 2:
-        //                     virus.y += differenceY;
-        //                 default:
-        //                     break;
-        //             }
-        //         }
-        //     }, this)
-        // }, this.spawnTime * 2.5);
+        this.spawnEnemy1 = setInterval(() => {
+                let lane = (Math.floor(Math.random() * 3));
+                this.addVirus(this.viruses, 'virus', (lane * differenceY) + 85, this.virusSpeed1);
+            }, this.spawnTime);
+            //spawn a special type of enemy every 2.5 seconds
+        this.spawnEnemy2 = setInterval(() => {
+                this.addVirus(this.specialViruses, 'virus2', this.player1.y, this.virusSpeed2);
+            }, this.spawnTime * 2.5);
         
         // Collision
         this.physics.add.collider(this.player1, this.platforms);
@@ -149,7 +130,6 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        console.log(this.time.now);
         //increase difficulty
         if(this.time.now % 10000 < 10) {
             this.virusSpeed1 -= 100;
@@ -167,7 +147,6 @@ class Play extends Phaser.Scene {
 
         // Update Player
         this.player1.update();
-
         // Update Viruses
         this.viruses.getChildren().forEach((virus) => {
             if (virus.x <= 0 - virus.width) {
@@ -181,13 +160,15 @@ class Play extends Phaser.Scene {
         this.viruses.killAndHide(virus);
         this.viruses.remove(virus);
         this.player1.play('emailDeathAnimation');
+        this.player1.setImmovable(true);
+        clearInterval(this.spawnEnemy1);
+        clearInterval(this.spawnEnemy2);
 
-        // Go to Game Over Screen
+        //Go to Game Over Screen
         setTimeout(() => {
             this.scene.start("gameOver");
-        }, 1000)
+        }, 2300);
 
-        console.log("Game over");
     }
 
 }
