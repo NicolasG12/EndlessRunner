@@ -132,7 +132,18 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.score = this.add.text(game.config.width - 100, 45, Math.floor(this.time.now / 1000), scoreConfig);
+        let time = 0;
+        this.score = this.add.text(game.config.width - 100, 45, time, scoreConfig);
+        this.timer = this.time.addEvent( {
+            delay: 1000,
+            callback: () => {
+                time++;
+                this.score.text = time;
+            },
+            callbackScope: this,
+            loop: true
+        });
+
     }
 
     addVirus(virusGroup, virusType, posY, speed) {
@@ -143,9 +154,6 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        if(!this.gameOver) {
-            this.score.text = Math.floor(this.time.now / 1000);
-        }
         //increase difficulty
         if(this.time.now % 10000 < 10) {
             this.virusSpeed1 -= 100;
