@@ -92,17 +92,28 @@ class Play extends Phaser.Scene {
                 let lane = (Math.floor(Math.random() * 3));
                 this.addVirus(this.viruses, 'virus', (lane * differenceY) + 85, this.virusSpeed1);
             }, this.spawnTime);
-            //spawn a special type of enemy every 2.5 seconds
+        //spawn a special type of enemy every 2.5 seconds
         this.spawnEnemy2 = setInterval(() => {
                 this.addVirus(this.specialViruses, 'virus2', this.player1.y, this.virusSpeed2);
             }, this.spawnTime * 2.5);
         
+        //group for the powerups
+        this.powerup = this.physics.add.sprite(game.config.width, 0, 'shield').setOrigin(0, 0);
+        this.spawnPowerup = setInterval(() => {
+            let lane = Math.floor(Math.random() * 3);
+            this.powerup.y = (lane * differenceY) + 85;
+            this.powerup.x = game.config.width;
+            this.powerup.setVelocityX(this.virusSpeed1);
+            this.powerup.alpha = 1;
+        }, 7500);
         // Collision
         this.physics.add.collider(this.player1, this.platforms);
         this.physics.add.collider(this.viruses, this.platforms);
         this.physics.add.collider(this.specialViruses, this.platforms);
+        this.physics.add.collider(this.powerup, this.platforms);
         this.physics.add.overlap(this.player1, this.viruses, this.playerHit, null, this);
         this.physics.add.overlap(this.player1, this.specialViruses, this.playerHit, null, this);
+        this.physics.add.overlap(this.player1, this.powerup, this.enablePowerup, null, this);
 
         // Add input keys
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -165,19 +176,31 @@ class Play extends Phaser.Scene {
     }
 
     // Player Hit Function
-    playerHit(virus) {
-        this.gameOver = true;
-        this.viruses.killAndHide(virus);
-        this.viruses.remove(virus);
-        this.player1.play('emailDeathAnimation');
-        this.player1.setImmovable(true);
-        clearInterval(this.spawnEnemy1);
-        clearInterval(this.spawnEnemy2);
-        this.viruses.setVelocityX(0);
-        this.specialViruses.setVelocityX(0);
-        this.scrollSpeed = 0;
+    playerHit(player, virus) {
+        if(!this.player1.powerup) {
+            this.gameOver = true;
+            // this.viruses.killAndHide(virus);
+            // this.viruses.remove(virus);
+            this.player1.play('emailDeathAnimation');
+            this.player1.setImmovable(true);
+            clearInterval(this.spawnEnemy1);
+            clearInterval(this.spawnEnemy2);
+            this.viruses.setVelocityX(0);
+            this.specialViruses.setVelocityX(0);
+            this.scrollSpeed = 0;
+            setTimeout(() => {
+                this.scene.start("gameOver");
+            }, 2000);
+        } else {
+            virus.destroy();
+        }
+    }
+
+    enablePowerup() {
+        this.player1.powerup = true;
+        this.powerup.alpha = 0;
         setTimeout(() => {
-            this.scene.start("gameOver");
+            this.player1.powerup = false;
         }, 2000);
     }
 
