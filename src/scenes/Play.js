@@ -6,7 +6,7 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.image('platformTile', './assets/tempPlatTile.png');
         this.load.image('shield', './assets/Shield Draft.png');
-        this.load.image('background', './assets/tempBackground.png');
+        this.load.image('background', './assets/background.png');
         this.load.image('virus2', './assets/02_virus.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
         this.load.spritesheet('virus', './assets/Skull Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 4 });
@@ -25,7 +25,7 @@ class Play extends Phaser.Scene {
         this.gameOver = false;
 
         // Initialize Background
-        this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0).setScale(2);;
         // this.numBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'numBackground').setOrigin(0, 0);
 
         // Initialize Platform Group
