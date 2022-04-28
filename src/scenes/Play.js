@@ -23,6 +23,7 @@ class Play extends Phaser.Scene {
         this.virusSpeed2 = -400;
         this.platformSpeed = 4;
         this.gameOver = false;
+        this.score = 0;
 
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0).setScale(2);;
@@ -132,18 +133,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        let time = 0;
-        this.score = this.add.text(game.config.width - 100, 45, time, scoreConfig);
-        this.timer = this.time.addEvent( {
-            delay: 1000,
-            callback: () => {
-                time++;
-                this.score.text = time;
-            },
-            callbackScope: this,
-            loop: true
-        });
-
+        this.scoreDisplay = this.add.text(game.config.width - 100, 45, this.score, scoreConfig);
     }
 
     addVirus(virusGroup, virusType, posY, speed) {
@@ -154,6 +144,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        this.scoreDisplay.text = this.score++;
         //increase difficulty
         if(this.time.now % 10000 < 10) {
             this.virusSpeed1 -= 100;
