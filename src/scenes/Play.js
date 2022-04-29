@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         this.load.image('platformTile', './assets/tempPlatTile.png');
         this.load.image('background', './assets/background.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
+        this.load.spritesheet('virus1', './assets/01_virus.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
         this.load.spritesheet('virus2', './assets/02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('email', './assets/Mail-E Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2 });
         this.load.spritesheet('emailDeath', './assets/Mail-E Game Over Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 10 });
@@ -79,10 +80,10 @@ class Play extends Phaser.Scene {
         // Group for the enemy viruses
         this.viruses = this.physics.add.group();
         this.specialViruses = this.physics.add.group();
-        // Create an animation for the virus
+        // Create an animation for the viruses
         this.anims.create({
-            key: 'virusAnimation',
-            frames: this.anims.generateFrameNumbers('virus', { start: 0, end: 4, first: 0 }),
+            key: 'virus1Animation',
+            frames: this.anims.generateFrameNumbers('virus1', { start: 0, end: 3, first: 0 }),
             frameRate: 15,
             repeat: -1
         });
@@ -97,22 +98,31 @@ class Play extends Phaser.Scene {
         setTimeout(() => {
             this.spawnEnemy1 = setInterval(() => {
                 let lane = (Math.floor(Math.random() * 3));
-                this.addVirus(this.viruses, 'virus', (lane * differenceY) + 85, this.virusSpeed1);
+                this.addVirus(this.viruses, 'virus1', 'virus1Animation', (lane * differenceY) + 85, this.virusSpeed1);
             }, this.spawnTime);
             //spawn a special type of enemy every 2.5 seconds
             this.spawnEnemy2 = setInterval(() => {
-                this.addVirus(this.specialViruses, 'virus2', this.player1.y, this.virusSpeed2);
+                this.addVirus(this.specialViruses, 'virus2', 'virus2Animation', this.player1.y, this.virusSpeed2);
             }, this.spawnTime * 2.5);
         }, 3000);
         //group for the powerups
         this.powerup = this.physics.add.sprite(game.config.width, 0, 'shield').setOrigin(0, 0);
+        //create animation for shield
+        this.anims.create({
+            key: 'shieldAnimation',
+            frames: this.anims.generateFrameNumbers('shield', {start: 0, end: 3, first: 0}),
+            frameRate: 15,
+            repeat: -1
+        });
+        //spawn a powerup every interval of time
         this.spawnPowerup = setInterval(() => {
             let lane = Math.floor(Math.random() * 3);
             this.powerup.y = (lane * differenceY) + 85;
             this.powerup.x = game.config.width;
             this.powerup.setVelocityX(this.virusSpeed1);
             this.powerup.alpha = 1;
-        }, 7500);
+            this.powerup.play('shieldAnimation');
+        }, 7300);
         // Collision
         this.physics.add.collider(this.player1, this.platforms);
         this.physics.add.collider(this.viruses, this.platforms);
@@ -143,26 +153,26 @@ class Play extends Phaser.Scene {
     }
 
 
-    addVirus(virusGroup, virusType, posY, speed) {
-        let virus = this.physics.add.sprite(game.config.width, posY, virusType).setOrigin(0, 0);
+    addVirus(virusGroup, virusType, virusAnimation, posY, speed) {
+        let virus = this.physics.add.sprite(game.config.width, posY, virusType, 0).setOrigin(0, 0);
         virusGroup.add(virus);
-        virus.play('virus2Animation');
+        virus.play(virusAnimation);
         virusGroup.setVelocityX(speed);
     }
 
     update() {
         this.scoreDisplay.text = this.score++;
         //increase difficulty
-        if(this.time.now % 10000 < 10) {
-            this.virusSpeed1 -= 100;
-            this.virusSpeed2 -= 100;
-            this.scrollSpeed += 1.5;
-            this.platformSpeed += 1.5; 
-            if(this.spawnTime > 500) {
-                this.spawnTime -= 100;
-                console.log(this.spawnTime);
-            }
-        }
+        // if(this.time.now % 10000 < 10) {
+        //     this.virusSpeed1 -= 100;
+        //     this.virusSpeed2 -= 100;
+        //     this.scrollSpeed += 1.5;
+        //     this.platformSpeed += 1.5; 
+        //     if(this.spawnTime > 500) {
+        //         this.spawnTime -= 100;
+        //         console.log(this.spawnTime);
+        //     }
+        // }
         // Update Background
         this.background.tilePositionX += this.scrollSpeed;
         // this.numBackground.tilePositionX += this.scrollSpeed * 1.5;
