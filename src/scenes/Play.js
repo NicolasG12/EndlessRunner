@@ -4,14 +4,24 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('platformTile', './assets/tempPlatTile.png');
-        this.load.image('background', './assets/background.png');
+        this.load.path = 'assets/';
+        this.load.image('platformTile', 'tempPlatTile.png');
+        this.load.image('background', 'background.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
-        this.load.spritesheet('virus1', './assets/01_virus.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
-        this.load.spritesheet('virus2', './assets/02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
-        this.load.spritesheet('email', './assets/Mail-E Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2 });
-        this.load.spritesheet('emailDeath', './assets/Mail-E Game Over Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 10 });
-        this.load.spritesheet('shield', './assets/01_shield.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('virus1', '01_virus.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('virus2', '02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
+        this.load.spritesheet('email', 'Mail-E Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2 });
+        this.load.spritesheet('emailDeath', 'Mail-E Game Over Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 10 });
+        this.load.spritesheet('shield', '01_shield.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
+
+        //load in the sounds
+        this.load.audio('damage', 'damage.wav');
+        this.load.audio('death', 'death.wav');
+        this.load.audio('select', 'select.wav');
+        this.load.audio('powerup', 'powerUp.wav');
+        this.load.audio('main', 'mainSong.wav');
+        this.load.audio('play', 'playMusic.wav');
+        this.load.audio('speedUp', 'speedUp.wav');
     }
 
     create() {
