@@ -71,9 +71,17 @@ class Play extends Phaser.Scene {
             botTile.body.allowGravity = false;
             this.platforms.add(botTile);
         }
+        
+        //create particles for teleport
+        this.particleManager = this.add.particles('particle');
+        this.particleSystem = this.particleManager.createEmitter({
+            speed: 100,
+            angle: {min: 0, max: 360},
+            frequency: -1
+        });
 
         // Initialize Player
-        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
+        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email', 0, this.particleSystem).setOrigin(0, 0);
         this.player1.setSize(35, 48)
         this.player1.setOffset(14, 0);
         // Create an animation for the player
@@ -130,15 +138,7 @@ class Play extends Phaser.Scene {
             setScale: {x: 2, y: 2}
         });
         this.largeViruses.playAnimation('virus3Animation');
-        
-        //create particles for teleport
-        let particleManager = this.add.particles('particle');
-        let particleSystem = particleManager.createEmitter({
-            x: this.player1.x,
-            y: this.player1.y,
-            follow: this.player1
-        });
-        particleManager.pause();
+
 
         // Spawn enemies every second
         setTimeout(() => {
