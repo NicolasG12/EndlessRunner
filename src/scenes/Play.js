@@ -11,8 +11,10 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('virus1', '01_virus.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
         this.load.spritesheet('virus2', '02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('email', '01_mail-e.png', { frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7 });
-        this.load.spritesheet('emailDeath', 'Mail-E Game Over Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 10 });
+        this.load.spritesheet('emailDeath', '01_mail-e_Death.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 10 });
+        this.load.spritesheet('boosted', '01_mail-e_powerup.png', {frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7});
         this.load.spritesheet('shield', '01_shield.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
+
 
         //load in the sounds
         this.load.audio('damage', 'damage.wav');
@@ -85,6 +87,12 @@ class Play extends Phaser.Scene {
             frameRate: 15,
             repeat: 1
         });
+        this.anims.create({
+            key: 'emailPowerup',
+            frames: this.anims.generateFrameNumbers('boosted', {start: 0, end: 7, first: 0}),
+            frameRate: 15,
+            repeat: -1
+        })
         this.player1.play('emailAnimation');
 
 
@@ -147,6 +155,14 @@ class Play extends Phaser.Scene {
         // Add input keys
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+
+        this.backgroundMusic = this.sound.add('main');
+        this.backgroundMusic.loop = true;
+        this.backgroundMusic.setLoop(true);
+        this.backgroundMusic.play();
+
+        this.death = this.sound.add('death');
+        this.death.setVolume(0);
 
         //create the score display
         let scoreConfig = {
@@ -228,6 +244,7 @@ class Play extends Phaser.Scene {
             setTimeout(() => {
                 this.scene.start("gameOver");
                 this.scene.stop("playScene");
+                this.backgroundMusic.stop();
             }, 2000);
         } else {
             this.sound.play('damage');
@@ -239,8 +256,10 @@ class Play extends Phaser.Scene {
         this.player1.powerup = true;
         this.powerup.alpha = 0;
         this.sound.play('powerup');
+        this.player1.play('emailPowerup');
         setTimeout(() => {
             this.player1.powerup = false;
+            this.player1.play('emailAnimation');
         }, 2000);
     }
 
