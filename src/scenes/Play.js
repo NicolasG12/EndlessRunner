@@ -180,7 +180,7 @@ class Play extends Phaser.Scene {
         this.backgroundMusic.setLoop(true);
         this.backgroundMusic.play();
 
-        this.death = this.sound.add('death');
+        // this.death = this.sound.add('death');
         // this.death.setVolume(0);
 
         //create the score display
@@ -199,7 +199,7 @@ class Play extends Phaser.Scene {
         this.scoreDisplay = this.add.text(game.config.width - 100, 45, this.score, scoreConfig);
         //increase the difficulty every 10 seconds
         setTimeout(() => {
-            setInterval(() => {
+            this.difficulty = setInterval(() => {
                 this.virusSpeed1 -= 100;
                 this.virusSpeed2 -= 100;
                 this.scrollSpeed += .4;
@@ -246,14 +246,15 @@ class Play extends Phaser.Scene {
     playerHit(player, virus) {
         if(!this.player1.powerup) {
             this.gameOver = true;
-            // this.viruses.killAndHide(virus);
-            // this.viruses.remove(virus);
+            this.viruses.killAndHide(virus);
+            this.viruses.remove(virus);
             this.player1.play('emailDeathAnimation');
             this.player1.setImmovable(true);
             //stop the enemies from spawning
             clearInterval(this.spawnEnemy1);
             clearInterval(this.spawnEnemy2);
             clearInterval(this.spawnPowerup);
+            clearInterval(this.difficulty);
             //stop the enemies from moving
             this.viruses.setVelocityX(0);
             this.specialViruses.setVelocityX(0);
@@ -261,8 +262,8 @@ class Play extends Phaser.Scene {
             this.scrollSpeed = 0;
             this.sound.play('death');
             setTimeout(() => {
-                this.scene.start("gameOver");
                 this.scene.stop("playScene");
+                this.scene.start("gameOver");
                 this.backgroundMusic.stop();
             }, 2000);
         } else {
