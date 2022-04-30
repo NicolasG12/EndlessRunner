@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         this.load.path = 'assets/';
         this.load.image('platformTile', '01_tile.png');
         this.load.image('background', 'background.png');
+        this.load.image('particle', '01_particle.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
         this.load.spritesheet('virus1', '01_virus.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
         this.load.spritesheet('virus2', '02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
@@ -130,6 +131,13 @@ class Play extends Phaser.Scene {
         });
         this.largeViruses.playAnimation('virus3Animation');
         
+        //create particles for teleport
+        let particleManager = this.add.particles('particle');
+        let particleSystem = particleManager.createEmitter({
+            x: this.player1.x,
+            y: this.player1.y,
+            follow: this.player1
+        });
 
         // Spawn enemies every second
         setTimeout(() => {
