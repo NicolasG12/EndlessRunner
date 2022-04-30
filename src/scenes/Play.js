@@ -5,12 +5,12 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.path = 'assets/';
-        this.load.image('platformTile', 'tempPlatTile.png');
+        this.load.image('platformTile', '01_tile.png');
         this.load.image('background', 'background.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
         this.load.spritesheet('virus1', '01_virus.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
         this.load.spritesheet('virus2', '02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
-        this.load.spritesheet('email', 'Mail-E Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 2 });
+        this.load.spritesheet('email', '01_mail-e.png', { frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7 });
         this.load.spritesheet('emailDeath', 'Mail-E Game Over Animation Draft.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 10 });
         this.load.spritesheet('shield', '01_shield.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
 
@@ -34,6 +34,7 @@ class Play extends Phaser.Scene {
         this.platformSpeed = 4;
         this.gameOver = false;
         this.score = 0;
+        this.tutorial = true;
 
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0).setScale(2);;
@@ -73,7 +74,7 @@ class Play extends Phaser.Scene {
         // Create an animation for the player
         this.anims.create({
             key: 'emailAnimation',
-            frames: this.anims.generateFrameNumbers('email', { start: 0, end: 2, first: 0 }),
+            frames: this.anims.generateFrameNumbers('email', { start: 0, end: 7, first: 0 }),
             frameRate: 15,
             repeat: -1
         });
@@ -114,6 +115,7 @@ class Play extends Phaser.Scene {
             this.spawnEnemy2 = setInterval(() => {
                 this.addVirus(this.specialViruses, 'virus2', 'virus2Animation', this.player1.y, this.virusSpeed2);
             }, this.spawnTime * 2.5);
+            this.tutorial = false;
         }, 3000);
         //group for the powerups
         this.powerup = this.physics.add.sprite(game.config.width, 0, 'shield').setOrigin(0, 0);
@@ -160,6 +162,19 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreDisplay = this.add.text(game.config.width - 100, 45, this.score, scoreConfig);
+        //increase the difficulty every 10 seconds
+        setTimeout(() => {
+            setInterval(() => {
+                this.virusSpeed1 -= 100;
+                this.virusSpeed2 -= 100;
+                this.scrollSpeed += .4;
+                this.platformSpeed += .4; 
+                if(this.spawnTime > 500) {
+                    this.spawnTime -= 100;
+                    console.log(this.spawnTime);
+                }
+            }, 10000);
+        }, 3000);
     }
 
 
@@ -171,18 +186,9 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        this.scoreDisplay.text = this.score++;
-        //increase difficulty
-        // if(this.time.now % 10000 < 10) {
-        //     this.virusSpeed1 -= 100;
-        //     this.virusSpeed2 -= 100;
-        //     this.scrollSpeed += 1.5;
-        //     this.platformSpeed += 1.5; 
-        //     if(this.spawnTime > 500) {
-        //         this.spawnTime -= 100;
-        //         console.log(this.spawnTime);
-        //     }
-        // }
+        if(!this.tutorial) {
+            this.scoreDisplay.text = this.score++;
+        }
         // Update Background
         this.background.tilePositionX += this.scrollSpeed;
         // this.numBackground.tilePositionX += this.scrollSpeed * 1.5;
@@ -209,15 +215,22 @@ class Play extends Phaser.Scene {
             // this.viruses.remove(virus);
             this.player1.play('emailDeathAnimation');
             this.player1.setImmovable(true);
+            //stop the enemies from spawning
             clearInterval(this.spawnEnemy1);
             clearInterval(this.spawnEnemy2);
+            clearInterval(this.spawnPowerup);
+            //stop the enemies from moving
             this.viruses.setVelocityX(0);
             this.specialViruses.setVelocityX(0);
+            this.powerup.setVelocityX(0);
             this.scrollSpeed = 0;
+            this.sound.play('death');
             setTimeout(() => {
                 this.scene.start("gameOver");
+                this.scene.stop("playScene");
             }, 2000);
         } else {
+            this.sound.play('damage');
             virus.destroy();
         }
     }
@@ -225,6 +238,7 @@ class Play extends Phaser.Scene {
     enablePowerup() {
         this.player1.powerup = true;
         this.powerup.alpha = 0;
+        this.sound.play('powerup');
         setTimeout(() => {
             this.player1.powerup = false;
         }, 2000);
