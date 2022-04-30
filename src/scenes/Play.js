@@ -138,6 +138,7 @@ class Play extends Phaser.Scene {
             y: this.player1.y,
             follow: this.player1
         });
+        particleManager.pause();
 
         // Spawn enemies every second
         setTimeout(() => {
