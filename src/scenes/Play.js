@@ -167,7 +167,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.specialViruses, this.platforms);
         this.physics.add.collider(this.powerup, this.platforms);
         this.enemyHit = this.physics.add.overlap(this.player1, this.viruses, this.playerHit, null, this);
-        this.physics.add.overlap(this.player1, this.specialViruses, this.playerHit, null, this);
+        this.specialEnemyHit = this.physics.add.overlap(this.player1, this.specialViruses, this.playerHit, null, this);
         this.physics.add.overlap(this.player1, this.powerup, this.enablePowerup, null, this);
 
         // Add input keys
@@ -249,6 +249,7 @@ class Play extends Phaser.Scene {
             this.player1.play('emailDeathAnimation');
             this.player1.setImmovable(true);
             this.enemyHit.destroy();
+            this.specialEnemyHit.destroy();
             //stop the enemies from spawning
             clearInterval(this.spawnEnemy1);
             clearInterval(this.spawnEnemy2);
