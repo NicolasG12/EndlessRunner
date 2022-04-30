@@ -9,7 +9,7 @@ class Menu extends Phaser.Scene {
 
     create() {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'menu').setOrigin(0, 0);
+        // this.add.tileSprite(0, 0, game.config.width, game.config.height, 'menu').setOrigin(0, 0);
         keySPACE.on('down', (key, event) => {
             this.scene.start('playScene');
         })

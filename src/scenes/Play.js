@@ -14,6 +14,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('emailDeath', '01_mail-e_Death.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 10 });
         this.load.spritesheet('boosted', '01_mail-e_powerup.png', {frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7});
         this.load.spritesheet('shield', '01_shield.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('virus3', '01_large_enemy.png', {frameWidth: 64, frameHeight: 50, startFrame: 0, endFrame: 5});
 
 
         //load in the sounds
@@ -42,6 +43,8 @@ class Play extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0).setScale(2);;
         // this.numBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'numBackground').setOrigin(0, 0);
 
+
+
         // Initialize Platform Group
         this.platforms = this.add.group();
 
@@ -69,6 +72,9 @@ class Play extends Phaser.Scene {
             this.platforms.add(botTile);
         }
 
+
+
+
         // Initialize Player
         this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
         this.player1.setSize(35, 48)
@@ -92,7 +98,7 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('boosted', {start: 0, end: 7, first: 0}),
             frameRate: 15,
             repeat: -1
-        })
+        });
         this.player1.play('emailAnimation');
 
 
@@ -112,6 +118,23 @@ class Play extends Phaser.Scene {
             frameRate: 15,
             repeat: -1
         });
+        this.anims.create({
+            key: 'virus3Animation',
+            frames: this.anims.generateFrameNumbers('virus3', {start: 0, end: 5, first: 0}),
+            frameRate: 15, 
+            repeat: -1
+        });
+
+        //create the three viruses following
+        this.largeViruses = this.add.group({
+            key: "virus3",
+            frame: 0,
+            repeat: 2,
+            setXY: {x: 25, y: game.config.height/4 - this.tileSize, stepY: game.config.height/4},
+            setScale: {x: 2, y: 2}
+        });
+        this.largeViruses.playAnimation('virus3Animation');
+        
 
         // Spawn enemies every second
         setTimeout(() => {
@@ -240,7 +263,7 @@ class Play extends Phaser.Scene {
             this.specialViruses.setVelocityX(0);
             this.powerup.setVelocityX(0);
             this.scrollSpeed = 0;
-            this.sound.play('death');
+            // this.sound.play('death');
             setTimeout(() => {
                 this.scene.start("gameOver");
                 this.scene.stop("playScene");
