@@ -72,9 +72,6 @@ class Play extends Phaser.Scene {
             this.platforms.add(botTile);
         }
 
-
-
-
         // Initialize Player
         this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
         this.player1.setSize(35, 48)
@@ -86,7 +83,6 @@ class Play extends Phaser.Scene {
             frameRate: 15,
             repeat: -1
         });
-
         this.anims.create({
             key: 'emailDeathAnimation',
             frames: this.anims.generateFrameNumbers('emailDeath', { start: 0, end: 10, first: 0 }),
@@ -179,13 +175,13 @@ class Play extends Phaser.Scene {
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
-        this.backgroundMusic = this.sound.add('main');
+        this.backgroundMusic = this.sound.add('play');
         this.backgroundMusic.loop = true;
         this.backgroundMusic.setLoop(true);
         this.backgroundMusic.play();
 
         this.death = this.sound.add('death');
-        this.death.setVolume(0);
+        // this.death.setVolume(0);
 
         //create the score display
         let scoreConfig = {
@@ -263,7 +259,7 @@ class Play extends Phaser.Scene {
             this.specialViruses.setVelocityX(0);
             this.powerup.setVelocityX(0);
             this.scrollSpeed = 0;
-            // this.sound.play('death');
+            this.sound.play('death');
             setTimeout(() => {
                 this.scene.start("gameOver");
                 this.scene.stop("playScene");
