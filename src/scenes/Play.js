@@ -75,8 +75,8 @@ class Play extends Phaser.Scene {
         //create particles for teleport
         this.particleManager = this.add.particles('particle');
         this.particleSystem = this.particleManager.createEmitter({
-            speed: 100,
-            angle: {min: 0, max: 360},
+            speed: {min: -100, max: 100},
+            lifespan: {min: 10, max: 1000, steps: 100},
             frequency: -1
         });
 
