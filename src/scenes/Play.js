@@ -8,13 +8,13 @@ class Play extends Phaser.Scene {
         this.load.image('platformTile', '01_tile.png');
         this.load.image('background', 'background.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
-        this.load.spritesheet('virus1', '01_virus.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('virus1', '01_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('virus2', '02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('email', '01_mail-e.png', { frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7 });
         this.load.spritesheet('emailDeath', '01_mail-e_Death.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 7 });
-        this.load.spritesheet('boosted', '01_mail-e_powerup.png', {frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7});
-        this.load.spritesheet('shield', '01_shield.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
-        this.load.spritesheet('virus3', '01_large_enemy.png', {frameWidth: 64, frameHeight: 50, startFrame: 0, endFrame: 5});
+        this.load.spritesheet('boosted', '01_mail-e_powerup.png', { frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7 });
+        this.load.spritesheet('shield', '01_shield.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
+        this.load.spritesheet('virus3', '01_large_enemy.png', { frameWidth: 64, frameHeight: 50, startFrame: 0, endFrame: 5 });
 
 
         //load in the sounds
@@ -40,8 +40,6 @@ class Play extends Phaser.Scene {
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0).setScale(2);;
         // this.numBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'numBackground').setOrigin(0, 0);
-
-
 
         // Initialize Platform Group
         this.platforms = this.add.group();
@@ -89,7 +87,7 @@ class Play extends Phaser.Scene {
         });
         this.anims.create({
             key: 'emailPowerup',
-            frames: this.anims.generateFrameNumbers('boosted', {start: 0, end: 7, first: 0}),
+            frames: this.anims.generateFrameNumbers('boosted', { start: 0, end: 7, first: 0 }),
             frameRate: 15,
             repeat: -1
         });
@@ -108,14 +106,14 @@ class Play extends Phaser.Scene {
         });
         this.anims.create({
             key: 'virus2Animation',
-            frames: this.anims.generateFrameNumbers('virus2', {start: 0, end: 3, first: 0}),
+            frames: this.anims.generateFrameNumbers('virus2', { start: 0, end: 3, first: 0 }),
             frameRate: 15,
             repeat: -1
         });
         this.anims.create({
             key: 'virus3Animation',
-            frames: this.anims.generateFrameNumbers('virus3', {start: 0, end: 5, first: 0}),
-            frameRate: 15, 
+            frames: this.anims.generateFrameNumbers('virus3', { start: 0, end: 5, first: 0 }),
+            frameRate: 15,
             repeat: -1
         });
 
@@ -124,11 +122,11 @@ class Play extends Phaser.Scene {
             key: "virus3",
             frame: 0,
             repeat: 2,
-            setXY: {x: 25, y: game.config.height/4 - this.tileSize, stepY: game.config.height/4},
-            setScale: {x: 2, y: 2}
+            setXY: { x: 25, y: game.config.height / 4 - this.tileSize, stepY: game.config.height / 4 },
+            setScale: { x: 2, y: 2 }
         });
         this.largeViruses.playAnimation('virus3Animation');
-        
+
 
         // Spawn enemies every second
         setTimeout(() => {
@@ -147,7 +145,7 @@ class Play extends Phaser.Scene {
         //create animation for shield
         this.anims.create({
             key: 'shieldAnimation',
-            frames: this.anims.generateFrameNumbers('shield', {start: 0, end: 3, first: 0}),
+            frames: this.anims.generateFrameNumbers('shield', { start: 0, end: 3, first: 0 }),
             frameRate: 15,
             repeat: -1
         });
@@ -167,7 +165,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.powerup, this.platforms);
         this.enemyHit = this.physics.add.overlap(this.player1, this.viruses, this.playerHit, null, this);
         this.specialEnemyHit = this.physics.add.overlap(this.player1, this.specialViruses, this.playerHit, null, this);
-        this.physics.add.overlap(this.player1, this.powerup, this.enablePowerup, null, this);
+        this.powerUpHit = this.physics.add.overlap(this.player1, this.powerup, this.enablePowerup, null, this);
 
         // Add input keys
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -196,15 +194,22 @@ class Play extends Phaser.Scene {
         this.scoreDisplay = this.add.text(game.config.width - 100, 45, this.score, scoreConfig);
         //increase the difficulty every 10 seconds
         setTimeout(() => {
-            this.difficulty = setInterval(() => {
-                this.virusSpeed1 -= 100;
-                this.virusSpeed2 -= 100;
-                this.scrollSpeed += .1;
-                this.platformSpeed += .1; 
-                if(this.spawnTime > 500) {
-                    this.spawnTime -= 100;
-                }
-            }, 10000);
+            if (this.virusSpeed2 <= 1000) {
+                this.difficulty = setInterval(() => {
+                    this.virusSpeed1 -= 100;
+                    console.log('virusSpeed1:' + this.virusSpeed1);
+                    this.virusSpeed2 -= 100;
+                    console.log('virusSpeed2:' + this.virusSpeed2);
+                    this.scrollSpeed += .1;
+                    console.log('scrollSpeed:' + this.scrollSpeed);
+                    this.platformSpeed += .1;
+                    console.log('platformSpeed:' + this.platformSpeed);
+                    if (this.spawnTime > 500) {
+                        this.spawnTime -= 100;
+                    }
+                    console.log('sqawnTime:' + this.spawnTime);
+                }, 10000);
+            }
         }, 3000);
     }
 
@@ -218,7 +223,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        if(!this.tutorial) {
+        if (!this.tutorial) {
             this.scoreDisplay.text = this.score++;
         }
         // Update Background
@@ -230,7 +235,7 @@ class Play extends Phaser.Scene {
         }, this);
 
         // Update Player
-        if(!this.gameOver) {
+        if (!this.gameOver) {
             this.player1.update();
         }
         // Update Viruses
@@ -243,7 +248,7 @@ class Play extends Phaser.Scene {
 
     // Player Hit Function
     playerHit(player, virus) {
-        if(!this.player1.powerup) {
+        if (!this.player1.powerup) {
             this.gameOver = true;
             this.player1.play('emailDeathAnimation');
             this.player1.setImmovable(true);
@@ -272,12 +277,16 @@ class Play extends Phaser.Scene {
         }
     }
 
-    enablePowerup() {
+    enablePowerup(player, powerup) {
         this.player1.powerup = true;
         this.powerup.alpha = 0;
         this.sound.play('powerup');
+        this.powerUpHit.destroy();
         this.player1.play('emailPowerup');
         setTimeout(() => {
+            if (!this.gameOver) {
+                this.powerUpHit = this.physics.add.overlap(this.player1, this.powerup, this.enablePowerup, null, this);
+            }
             this.player1.powerup = false;
             this.player1.play('emailAnimation');
         }, 2000);
