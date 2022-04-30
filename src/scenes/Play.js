@@ -200,11 +200,10 @@ class Play extends Phaser.Scene {
             this.difficulty = setInterval(() => {
                 this.virusSpeed1 -= 100;
                 this.virusSpeed2 -= 100;
-                this.scrollSpeed += .4;
-                this.platformSpeed += .4; 
+                this.scrollSpeed += .1;
+                this.platformSpeed += .1; 
                 if(this.spawnTime > 500) {
                     this.spawnTime -= 100;
-                    console.log(this.spawnTime);
                 }
             }, 10000);
         }, 3000);
@@ -215,7 +214,8 @@ class Play extends Phaser.Scene {
         let virus = this.physics.add.sprite(game.config.width, posY, virusType, 0).setOrigin(0, 0);
         virusGroup.add(virus);
         virus.play(virusAnimation);
-        virusGroup.setVelocityX(speed);
+        // virusGroup.setVelocityX(speed);
+        virus.setVelocityX(speed);
     }
 
     update() {
