@@ -20,7 +20,6 @@ class Play extends Phaser.Scene {
         //load in the sounds
         this.load.audio('damage', 'damage.wav');
         this.load.audio('death', 'death.wav');
-        this.load.audio('select', 'select.wav');
         this.load.audio('powerup', 'powerUp.wav');
         this.load.audio('play', 'playMusic.wav');
         this.load.audio('speedUp', 'speedUp.wav');
@@ -73,8 +72,8 @@ class Play extends Phaser.Scene {
 
         // Initialize Player
         this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
-        this.player1.setSize(35, 48)
-        this.player1.setOffset(14, 0);
+        this.player1.setSize(48, 48)
+        this.player1.setOffset(30, 0);
         // Create an animation for the player
         this.anims.create({
             key: 'emailAnimation',
