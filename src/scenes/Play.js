@@ -11,7 +11,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('virus1', '01_virus.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
         this.load.spritesheet('virus2', '02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('email', '01_mail-e.png', { frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7 });
-        this.load.spritesheet('emailDeath', '01_mail-e_Death.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 10 });
+        this.load.spritesheet('emailDeath', '01_mail-e_Death.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 7 });
         this.load.spritesheet('boosted', '01_mail-e_powerup.png', {frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7});
         this.load.spritesheet('shield', '01_shield.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3});
         this.load.spritesheet('virus3', '01_large_enemy.png', {frameWidth: 64, frameHeight: 50, startFrame: 0, endFrame: 5});
@@ -22,7 +22,6 @@ class Play extends Phaser.Scene {
         this.load.audio('death', 'death.wav');
         this.load.audio('select', 'select.wav');
         this.load.audio('powerup', 'powerUp.wav');
-        this.load.audio('main', 'mainSong.wav');
         this.load.audio('play', 'playMusic.wav');
         this.load.audio('speedUp', 'speedUp.wav');
     }
@@ -85,9 +84,9 @@ class Play extends Phaser.Scene {
         });
         this.anims.create({
             key: 'emailDeathAnimation',
-            frames: this.anims.generateFrameNumbers('emailDeath', { start: 0, end: 10, first: 0 }),
+            frames: this.anims.generateFrameNumbers('emailDeath', { start: 0, end: 7, first: 0 }),
             frameRate: 15,
-            repeat: 1
+            repeat: -1
         });
         this.anims.create({
             key: 'emailPowerup',
@@ -167,7 +166,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.viruses, this.platforms);
         this.physics.add.collider(this.specialViruses, this.platforms);
         this.physics.add.collider(this.powerup, this.platforms);
-        this.physics.add.overlap(this.player1, this.viruses, this.playerHit, null, this);
+        this.enemyHit = this.physics.add.overlap(this.player1, this.viruses, this.playerHit, null, this);
         this.physics.add.overlap(this.player1, this.specialViruses, this.playerHit, null, this);
         this.physics.add.overlap(this.player1, this.powerup, this.enablePowerup, null, this);
 
@@ -177,7 +176,6 @@ class Play extends Phaser.Scene {
 
         this.backgroundMusic = this.sound.add('play');
         this.backgroundMusic.loop = true;
-        this.backgroundMusic.setLoop(true);
         this.backgroundMusic.play();
 
         // this.death = this.sound.add('death');
@@ -233,7 +231,9 @@ class Play extends Phaser.Scene {
         }, this);
 
         // Update Player
-        this.player1.update();
+        if(!this.gameOver) {
+            this.player1.update();
+        }
         // Update Viruses
         this.viruses.getChildren().forEach((virus) => {
             if (virus.x <= 0 - virus.width) {
@@ -246,10 +246,9 @@ class Play extends Phaser.Scene {
     playerHit(player, virus) {
         if(!this.player1.powerup) {
             this.gameOver = true;
-            this.viruses.killAndHide(virus);
-            this.viruses.remove(virus);
             this.player1.play('emailDeathAnimation');
             this.player1.setImmovable(true);
+            this.enemyHit.destroy();
             //stop the enemies from spawning
             clearInterval(this.spawnEnemy1);
             clearInterval(this.spawnEnemy2);
@@ -261,6 +260,7 @@ class Play extends Phaser.Scene {
             this.powerup.setVelocityX(0);
             this.scrollSpeed = 0;
             this.sound.play('death');
+            this.backgroundMusic.stop();
             setTimeout(() => {
                 this.scene.stop("playScene");
                 this.scene.start("gameOver");
