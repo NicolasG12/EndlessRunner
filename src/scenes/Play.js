@@ -35,7 +35,6 @@ class Play extends Phaser.Scene {
         this.virusSpeed2 = -400;
         this.platformSpeed = 4;
         this.gameOver = false;
-        this.score = 0;
         this.tutorial = true;
 
         // Initialize Background
@@ -188,8 +187,6 @@ class Play extends Phaser.Scene {
         this.backgroundMusic.loop = true;
         this.backgroundMusic.play();
 
-        // this.death = this.sound.add('death');
-        // this.death.setVolume(0);
 
         //create the score display
         let scoreConfig = {
@@ -204,7 +201,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreDisplay = this.add.text(game.config.width - 100, 45, this.score, scoreConfig);
+        this.scoreDisplay = this.add.text(game.config.width - 100, 45, score, scoreConfig);
         //increase the difficulty every 10 seconds
         setTimeout(() => {
             this.difficulty = setInterval(() => {
@@ -231,7 +228,7 @@ class Play extends Phaser.Scene {
 
     update() {
         if (!this.tutorial && !this.gameOver) {
-            this.scoreDisplay.text = this.score++;
+            this.scoreDisplay.text = score++;
         }
         // Update Background
         this.background.tilePositionX += this.scrollSpeed;

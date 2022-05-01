@@ -16,5 +16,5 @@ let game = new Phaser.Game(config);
 
 //the y distance between lanes
 let differenceY = game.config.height/4;
-
+let score = 0;
 let keyUP, keyDOWN, keySPACE;

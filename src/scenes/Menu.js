@@ -4,7 +4,7 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('menu', './assets/Main Menu Draft.png');
+        this.load.image('menu', './assets/01_menu.png');
         this.load.audio('main', './assets/mainSong.wav');
         this.load.audio('select', './assets/select.wav');
     }
@@ -14,7 +14,7 @@ class Menu extends Phaser.Scene {
         this.background.setLoop(true);
         this.background.play();
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        // this.add.tileSprite(0, 0, game.config.width, game.config.height, 'menu').setOrigin(0, 0);
+        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'menu').setScale(2);
         keySPACE.on('down', (key, event) => {
             this.background.stop();
             this.sound.play('select');
