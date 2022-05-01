@@ -25,6 +25,7 @@ class Play extends Phaser.Scene {
         this.load.audio('powerup', 'powerUp.wav');
         this.load.audio('play', 'playMusic.wav');
         this.load.audio('speedUp', 'speedUp.wav');
+        this.load.audio('teleport', 'teleport.wav');
     }
 
     create() {
@@ -90,7 +91,8 @@ class Play extends Phaser.Scene {
         this.control.play("controlsAni");
 
         // Initialize Player
-        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email', 0, this.particleSystem).setOrigin(0, 0);
+        this.teleport = this.sound.add('teleport');
+        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email', 0, this.particleSystem, this.teleport).setOrigin(0, 0);
         this.player1.setSize(48, 48);
         this.player1.setOffset(30, 0);
 

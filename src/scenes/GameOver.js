@@ -12,7 +12,7 @@ class GameOver extends Phaser.Scene {
       this.background.setLoop(true);
       this.background.play();
       keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-      this.add.tileSprite(0, 0, game.config.width, game.config.height, 'endscreen').setScale(2);
+      this.add.tileSprite(0, 0, game.config.width, game.config.height, 'endscreen').setOrigin(0,0);
       keySPACE.on('down', (key, event) => {
          this.background.stop();
          this.sound.play('select');
