@@ -76,7 +76,7 @@ class Play extends Phaser.Scene {
             repeat: -1
         });
 
-        this.control = this.add.sprite(game.config.width / 4 + 10, game.config.height / 2 - 70, "controls").setScale(1.5);
+        this.control = this.add.sprite(game.config.width / 4 + 30, game.config.height / 2 - 70, "controls").setScale(2);
         this.control.play("controlsAni");
 
         // Initialize Player
