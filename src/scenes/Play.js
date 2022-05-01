@@ -37,6 +37,7 @@ class Play extends Phaser.Scene {
         this.platformSpeed = 4;
         this.gameOver = false;
         this.tutorial = true;
+        score = 0;
 
         // Initialize Background
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0).setScale(2);;
@@ -222,6 +223,7 @@ class Play extends Phaser.Scene {
                     this.platformSpeed += .1;
                     this.spawnTime -= 100;
                     console.log(this.spawnTime);
+                    this.sound.play('speedUp')
                 }
             }, 10000);
         }, 3000);
