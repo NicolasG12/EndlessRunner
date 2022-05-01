@@ -1,4 +1,5 @@
 let config = {
+   parent: 'phaser-game',
    type: Phaser.AUTO,
    width: 1000,
    height: 600,

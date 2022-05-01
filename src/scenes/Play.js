@@ -6,7 +6,7 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.path = 'assets/';
         this.load.image('platformTile', '01_tile.png');
-        this.load.image('background', 'background.png');
+        this.load.image('background', '01_background.png');
         this.load.image('particle', '01_particle.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
         this.load.spritesheet('controls', '01_controls.png', { frameWidth: 96, frameHeight: 48, startFrame: 0, endFrame: 3 });
@@ -41,7 +41,7 @@ class Play extends Phaser.Scene {
         score = 0;
 
         // Initialize Background
-        this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0).setScale(2);;
+        this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
         // this.numBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'numBackground').setOrigin(0, 0);
 
         // Initialize Platform Group
