@@ -126,6 +126,7 @@ class Play extends Phaser.Scene {
             setScale: { x: 2, y: 2 }
         });
         this.largeViruses.playAnimation('virus3Animation');
+        this.largeViruses.setDepth(1);
 
 
         // Spawn enemies every second
@@ -197,17 +198,13 @@ class Play extends Phaser.Scene {
             if (this.virusSpeed2 <= 1000) {
                 this.difficulty = setInterval(() => {
                     this.virusSpeed1 -= 100;
-                    console.log('virusSpeed1:' + this.virusSpeed1);
                     this.virusSpeed2 -= 100;
                     console.log('virusSpeed2:' + this.virusSpeed2);
                     this.scrollSpeed += .1;
-                    console.log('scrollSpeed:' + this.scrollSpeed);
                     this.platformSpeed += .1;
-                    console.log('platformSpeed:' + this.platformSpeed);
                     if (this.spawnTime > 500) {
                         this.spawnTime -= 100;
                     }
-                    console.log('sqawnTime:' + this.spawnTime);
                 }, 10000);
             }
         }, 3000);
@@ -223,7 +220,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        if (!this.tutorial) {
+        if (!this.tutorial && !this.gameOver) {
             this.scoreDisplay.text = this.score++;
         }
         // Update Background
