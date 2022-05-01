@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         this.load.path = 'assets/';
         this.load.image('platformTile', '01_tile.png');
         this.load.image('background', 'background.png');
+        this.load.image('particle', '01_particle.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
         this.load.spritesheet('controls', '01_controls.png', { frameWidth: 96, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('virus1', '01_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
@@ -67,6 +68,14 @@ class Play extends Phaser.Scene {
             botTile.body.allowGravity = false;
             this.platforms.add(botTile);
         }
+        
+        //create particles for teleport
+        this.particleManager = this.add.particles('particle');
+        this.particleSystem = this.particleManager.createEmitter({
+            speed: {min: -100, max: 100},
+            lifespan: {min: 10, max: 1000, steps: 100},
+            frequency: -1
+        });
 
         // Create an animation for controls
         this.anims.create({
@@ -80,9 +89,10 @@ class Play extends Phaser.Scene {
         this.control.play("controlsAni");
 
         // Initialize Player
-        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
-        this.player1.setSize(48, 48)
         this.player1.setOffset(30, 0);
+        this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email', 0, this.particleSystem).setOrigin(0, 0);
+        this.player1.setSize(48, 48)
+
         // Create an animation for the player
         this.anims.create({
             key: 'emailAnimation',
