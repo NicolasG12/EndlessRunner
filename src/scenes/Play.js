@@ -72,12 +72,12 @@ class Play extends Phaser.Scene {
         // Create an animation for controls
         this.anims.create({
             key: "controlsAni",
-            frames: this.anims.generateFrameNumbers("controls", {start: 0, end: 3, first: 0}),
+            frames: this.anims.generateFrameNumbers("controls", { start: 0, end: 3, first: 0 }),
             frameRate: 15,
             repeat: -1
         });
 
-        this.control = this.add.sprite(game.config.width/4 + 10, game.config.height/2-70, "controls").setScale(1.5);
+        this.control = this.add.sprite(game.config.width / 4 + 10, game.config.height / 2 - 70, "controls").setScale(1.5);
         this.control.play("controlsAni");
 
         // Initialize Player
@@ -207,16 +207,16 @@ class Play extends Phaser.Scene {
         this.scoreDisplay = this.add.text(game.config.width - 100, 45, this.score, scoreConfig);
         //increase the difficulty every 10 seconds
         setTimeout(() => {
-            if (this.spawnTime > 300) {
-                this.difficulty = setInterval(() => {
+            this.difficulty = setInterval(() => {
+                if (this.spawnTime > 300) {
                     this.virusSpeed1 -= 100;
                     this.virusSpeed2 -= 100;
                     this.scrollSpeed += .1;
                     this.platformSpeed += .1;
                     this.spawnTime -= 100;
                     console.log(this.spawnTime);
-                }, 10000);
-            }
+                }
+            }, 10000);
         }, 3000);
     }
 
