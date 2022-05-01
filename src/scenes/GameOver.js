@@ -18,6 +18,13 @@ class GameOver extends Phaser.Scene {
          this.sound.play('select');
          this.scene.start("playScene");
       })
-      this.add.text(game.config.width/2, game.config.height/2, "Game Over!\nPress Space to restart");
+      let gameOverConfig = {
+         fontFamily: 'Courier',
+         fontSize: '20px',
+         fontStyle: 'bold',
+         color: '#FFFFFF',
+         align: 'left'
+     }
+      this.add.text(25, game.config.height - 200, "Press 'Space' to restart\nScore: " + score, gameOverConfig);
    }
 }

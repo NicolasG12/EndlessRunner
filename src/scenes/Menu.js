@@ -14,7 +14,7 @@ class Menu extends Phaser.Scene {
         this.background.setLoop(true);
         this.background.play();
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'menu').setScale(2).setOrigin(0, 0);
+        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'menu').setOrigin(0, 0);
         keySPACE.on('down', (key, event) => {
             this.background.stop();
             this.sound.play('select');
