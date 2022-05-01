@@ -1,3 +1,8 @@
+//Collaborator Names: Nicolas Guevara, Jocque Jefferson, Daniel Olaes
+//Game Title: You've Got Mail
+//Date completed: 5/1/2022
+//Creative Tilt:
+
 let config = {
    parent: 'phaser-game',
    type: Phaser.AUTO,
