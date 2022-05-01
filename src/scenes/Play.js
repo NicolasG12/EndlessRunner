@@ -207,15 +207,14 @@ class Play extends Phaser.Scene {
         this.scoreDisplay = this.add.text(game.config.width - 100, 45, this.score, scoreConfig);
         //increase the difficulty every 10 seconds
         setTimeout(() => {
-            if (this.virusSpeed2 <= 1000) {
+            if (this.spawnTime > 300) {
                 this.difficulty = setInterval(() => {
                     this.virusSpeed1 -= 100;
                     this.virusSpeed2 -= 100;
                     this.scrollSpeed += .1;
                     this.platformSpeed += .1;
-                    if (this.spawnTime > 500) {
-                        this.spawnTime -= 100;
-                    }
+                    this.spawnTime -= 100;
+                    console.log(this.spawnTime);
                 }, 10000);
             }
         }, 3000);
