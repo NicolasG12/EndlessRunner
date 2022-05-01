@@ -25,6 +25,6 @@ class GameOver extends Phaser.Scene {
          color: '#FFFFFF',
          align: 'left'
      }
-      this.add.text(25, game.config.height - 200, "Press 'Space' to restart\nScore: " + score, gameOverConfig);
+      this.add.text(25, game.config.height - 200, "Score: " + score + "\nPress 'Space' to restart", gameOverConfig);
    }
 }
