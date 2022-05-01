@@ -73,7 +73,7 @@ class Play extends Phaser.Scene {
         this.particleManager = this.add.particles('particle');
         this.particleSystem = this.particleManager.createEmitter({
             speed: {min: -100, max: 100},
-            lifespan: {min: 10, max: 1000, steps: 100},
+            lifespan: {min: 10, max: 500, steps: 100},
             frequency: -1
         });
 

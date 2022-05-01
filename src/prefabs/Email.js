@@ -12,20 +12,20 @@ class Email extends Phaser.Physics.Arcade.Sprite {
         // If the player is below the top lane, they can move up
         if(Phaser.Input.Keyboard.JustDown(keyUP) && this.y > game.config.height/4) {
             this.y -= differenceY;
-            this.particles.explode(1000, this.x, this.y);
+            this.particles.explode(1000, this.x + 60, this.y + 20);
             this.alpha = 0;
             setTimeout(() => {
                 this.alpha = 1;
-            }, 200)
+            }, 300);
         }
         // If the player is above the bottom lane, they can move down
         if(Phaser.Input.Keyboard.JustDown(keyDOWN) && this.y < game.config.height/2) {
             this.y += differenceY;
-            this.particles.explode(1000, this.x, this.y);
+            this.particles.explode(1000, this.x + 60, this.y + 20);
             this.alpha = 0;
             setTimeout(() => {
                 this.alpha = 1;
-            }, 200)
+            }, 300);
         }
     }
 }
