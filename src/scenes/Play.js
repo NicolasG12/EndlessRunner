@@ -89,9 +89,9 @@ class Play extends Phaser.Scene {
         this.control.play("controlsAni");
 
         // Initialize Player
-        this.player1.setOffset(30, 0);
         this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email', 0, this.particleSystem).setOrigin(0, 0);
-        this.player1.setSize(48, 48)
+        this.player1.setSize(48, 48);
+        this.player1.setOffset(30, 0);
 
         // Create an animation for the player
         this.anims.create({
