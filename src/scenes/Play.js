@@ -211,7 +211,6 @@ class Play extends Phaser.Scene {
                 this.difficulty = setInterval(() => {
                     this.virusSpeed1 -= 100;
                     this.virusSpeed2 -= 100;
-                    console.log('virusSpeed2:' + this.virusSpeed2);
                     this.scrollSpeed += .1;
                     this.platformSpeed += .1;
                     if (this.spawnTime > 500) {
