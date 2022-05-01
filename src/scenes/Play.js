@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('platformTile', '01_tile.png');
         this.load.image('background', 'background.png');
         // this.load.image('numBackground', './assets/numberBackground.png');
+        this.load.spritesheet('controls', '01_controls.png', { frameWidth: 96, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('virus1', '01_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('virus2', '02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('email', '01_mail-e.png', { frameWidth: 80, frameHeight: 48, startFrame: 0, endFrame: 7 });
@@ -67,6 +68,17 @@ class Play extends Phaser.Scene {
             botTile.body.allowGravity = false;
             this.platforms.add(botTile);
         }
+
+        // Create an animation for controls
+        this.anims.create({
+            key: "controlsAni",
+            frames: this.anims.generateFrameNumbers("controls", {start: 0, end: 3, first: 0}),
+            frameRate: 15,
+            repeat: -1
+        });
+
+        this.control = this.add.sprite(game.config.width/4 + 10, game.config.height/2-70, "controls").setScale(1.5);
+        this.control.play("controlsAni");
 
         // Initialize Player
         this.player1 = new Email(this, 100, game.config.height / 2 - 68, 'email').setOrigin(0, 0);
@@ -128,7 +140,6 @@ class Play extends Phaser.Scene {
         this.largeViruses.playAnimation('virus3Animation');
         this.largeViruses.setDepth(1);
 
-
         // Spawn enemies every second
         setTimeout(() => {
             this.spawnEnemy1 = setInterval(() => {
@@ -140,6 +151,7 @@ class Play extends Phaser.Scene {
                 this.addVirus(this.specialViruses, 'virus2', 'virus2Animation', this.player1.y, this.virusSpeed2);
             }, this.spawnTime * 2.5);
             this.tutorial = false;
+            this.control.destroy();
         }, 3000);
         //group for the powerups
         this.powerup = this.physics.add.sprite(game.config.width, 0, 'shield').setOrigin(0, 0);
