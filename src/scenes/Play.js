@@ -236,7 +236,6 @@ class Play extends Phaser.Scene {
         let virus = this.physics.add.sprite(game.config.width, posY, virusType, 0).setOrigin(0, 0);
         virusGroup.add(virus);
         virus.play(virusAnimation);
-        // virusGroup.setVelocityX(speed);
         virus.setVelocityX(speed);
     }
 

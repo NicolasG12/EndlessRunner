@@ -22,5 +22,6 @@ let game = new Phaser.Game(config);
 
 //the y distance between lanes
 let differenceY = game.config.height/4;
+//global variable to keep score to display in multiple scenes
 let score = 0;
 let keyUP, keyDOWN, keySPACE;
