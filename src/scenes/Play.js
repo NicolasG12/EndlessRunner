@@ -4,11 +4,14 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
+        // load images
         this.load.path = 'assets/';
         this.load.image('platformTile', '01_tile.png');
         this.load.image('background', '01_background.png');
         this.load.image('particle', '01_particle.png');
         this.load.image('background2', '02_background.png');
+
+        // load sprite sheets
         this.load.spritesheet('controls', '01_controls.png', { frameWidth: 96, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('virus1', '01_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('virus2', '02_virus.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
@@ -18,8 +21,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('shield', '01_shield.png', { frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 3 });
         this.load.spritesheet('virus3', '01_large_enemy.png', { frameWidth: 64, frameHeight: 50, startFrame: 0, endFrame: 5 });
 
-
-        //load in the sounds
+        //load sounds
         this.load.audio('damage', 'damage.wav');
         this.load.audio('death', 'death.wav');
         this.load.audio('powerup', 'powerUp.wav');
@@ -70,8 +72,12 @@ class Play extends Phaser.Scene {
             botTile.body.allowGravity = false;
             this.platforms.add(botTile);
         }
+
+        // Initialize Control Icons
+        this.control = this.add.sprite(game.config.width / 4 + 30, game.config.height / 2 - 70, "controls").setScale(2);
+        this.control.play("controlsAni");
         
-        //create particles for teleport
+        // Create particles for teleport
         this.particleManager = this.add.particles('particle');
         this.particleSystem = this.particleManager.createEmitter({
             speed: {min: -100, max: 100},
@@ -86,9 +92,6 @@ class Play extends Phaser.Scene {
             frameRate: 15,
             repeat: -1
         });
-
-        this.control = this.add.sprite(game.config.width / 4 + 30, game.config.height / 2 - 70, "controls").setScale(2);
-        this.control.play("controlsAni");
 
         // Initialize Player
         this.teleport = this.sound.add('teleport');
@@ -117,10 +120,10 @@ class Play extends Phaser.Scene {
         });
         this.player1.play('emailAnimation');
 
-
         // Group for the enemy viruses
         this.viruses = this.physics.add.group();
         this.specialViruses = this.physics.add.group();
+
         // Create an animation for the viruses
         this.anims.create({
             key: 'virus1Animation',
@@ -141,7 +144,7 @@ class Play extends Phaser.Scene {
             repeat: -1
         });
 
-        //create the three viruses following
+        // Create the three viruses following
         this.largeViruses = this.add.group({
             key: "virus3",
             frame: 0,
@@ -158,23 +161,26 @@ class Play extends Phaser.Scene {
                 let lane = (Math.floor(Math.random() * 3));
                 this.addVirus(this.viruses, 'virus1', 'virus1Animation', (lane * differenceY) + 85, this.virusSpeed1);
             }, this.spawnTime);
-            //spawn a special type of enemy every 2.5 seconds
+            // Spawn a special type of enemy every 2.5 seconds
             this.spawnEnemy2 = setInterval(() => {
                 this.addVirus(this.specialViruses, 'virus2', 'virus2Animation', this.player1.y, this.virusSpeed2);
             }, this.spawnTime * 2.5);
             this.tutorial = false;
             this.control.destroy();
         }, 3000);
-        //group for the powerups
+
+        // Group for the powerups
         this.powerup = this.physics.add.sprite(game.config.width, 0, 'shield').setOrigin(0, 0);
-        //create animation for shield
+
+        // Create animation for shield
         this.anims.create({
             key: 'shieldAnimation',
             frames: this.anims.generateFrameNumbers('shield', { start: 0, end: 3, first: 0 }),
             frameRate: 15,
             repeat: -1
         });
-        //spawn a powerup every interval of time
+
+        // Spawn a powerup every interval of time
         this.spawnPowerup = setInterval(() => {
             let lane = Math.floor(Math.random() * 3);
             this.powerup.y = (lane * differenceY) + 85;
@@ -183,6 +189,7 @@ class Play extends Phaser.Scene {
             this.powerup.alpha = 1;
             this.powerup.play('shieldAnimation');
         }, 7300);
+
         // Collision
         this.physics.add.collider(this.player1, this.platforms);
         this.physics.add.collider(this.viruses, this.platforms);
@@ -196,12 +203,13 @@ class Play extends Phaser.Scene {
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
+        // Initialize Background Music
         this.backgroundMusic = this.sound.add('play');
         this.backgroundMusic.loop = true;
         this.backgroundMusic.play();
 
 
-        //create the score display
+        // Create the score display
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -215,7 +223,8 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreDisplay = this.add.text(game.config.width - 100, 45, score, scoreConfig);
-        //increase the difficulty every 10 seconds
+
+        // Increase the difficulty every 10 seconds
         setTimeout(() => {
             this.difficulty = setInterval(() => {
                 if (this.spawnTime > 300) {
@@ -231,19 +240,20 @@ class Play extends Phaser.Scene {
         }, 3000);
     }
 
-
+    // New Virus Initialization
     addVirus(virusGroup, virusType, virusAnimation, posY, speed) {
         let virus = this.physics.add.sprite(game.config.width, posY, virusType, 0).setOrigin(0, 0);
         virusGroup.add(virus);
         virus.play(virusAnimation);
-        // virusGroup.setVelocityX(speed);
         virus.setVelocityX(speed);
     }
 
     update() {
+        // Start score incrementing
         if (!this.tutorial && !this.gameOver) {
             this.scoreDisplay.text = score++;
         }
+
         // Update Background
         this.background.tilePositionX += this.scrollSpeed;
         this.background2.tilePositionX += this.scrollSpeed * 1.5;
@@ -256,6 +266,7 @@ class Play extends Phaser.Scene {
         if (!this.gameOver) {
             this.player1.update();
         }
+
         // Update Viruses
         this.viruses.getChildren().forEach((virus) => {
             if (virus.x <= 0 - virus.width) {
@@ -295,6 +306,7 @@ class Play extends Phaser.Scene {
         }
     }
 
+    // Power Up Function
     enablePowerup(player, powerup) {
         this.player1.powerup = true;
         this.powerup.alpha = 0;
@@ -311,4 +323,3 @@ class Play extends Phaser.Scene {
     }
 
 }
-
